@@ -1,0 +1,18 @@
+<div class="cms-update-container" fxLayout="column">
+  <app-generic-form-update #form [formConfig]="formConfig" [loading]="loading"></app-generic-form-update>
+
+  <ng-container *ngIf="formConfig.formGroup">
+    <button mat-stroked-button class="btn-height" color="primary" (click)="onSubmit()"
+      [disabled]="formConfig.formGroup.invalid || loading">
+      <mat-icon *ngIf="loading">
+        <mat-spinner color="primary" diameter="16"></mat-spinner>
+      </mat-icon>
+      {{ 'submit' | translate }}
+    </button>
+  </ng-container>
+
+  <!-- Loader -->
+  <div class="loader" fxLayout *ngIf="fetchingData">
+    <mat-spinner mode="indeterminate" diameter="25"></mat-spinner>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+.img-fit-none {
+  object-fit: none;
+}
+
+img {
+  object-fit: cover;
+}
+
+p {
+  font-family: Roboto, sans-serif;
+}
+
+.main-padding {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.mat-mdc-fab {
+  position: fixed !important;
+  bottom: 45px;
+  right: 15px;
+}
+
+.mat-mdc-fab:lang(ar) {
+  left: 15px;
+  right: 0;
+}
+
+.btn-height {
+  height: 48px !important;
+}
+
+mat-form-field mat-progress-spinner {
+  margin-inline-end: .5rem;
+}

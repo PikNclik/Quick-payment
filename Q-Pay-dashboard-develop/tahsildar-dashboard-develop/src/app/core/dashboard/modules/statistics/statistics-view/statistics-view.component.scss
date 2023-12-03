@@ -1,0 +1,17 @@
+.statistics-container {
+  height: 100%;
+  padding: 1rem;
+
+  mat-spinner {
+    margin: auto;
+  }
+
+  mat-card {
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+  }
+
+  mat-form-field {
+    max-width: 300px;
+  }
+}

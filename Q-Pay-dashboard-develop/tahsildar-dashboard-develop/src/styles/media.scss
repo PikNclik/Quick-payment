@@ -1,0 +1,62 @@
+@media screen and (max-width: 2700px) {
+  html,
+  body {
+    font-size: 22px;
+  }
+}
+
+@media screen and (max-width: 1920px) {
+  html,
+  body {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  html,
+  body {
+    font-size: 14px;
+  }
+}
+
+
+@media only screen and (max-width: 1200px) {}
+
+@media only screen and (max-width: 992px) {
+  html,
+  body {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .row {
+    flex-flow: column;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .notfound .notfound-404 {
+    height: 162px;
+  }
+
+  .notfound .notfound-404 h1 {
+    font-size: 162px;
+    height: 150px;
+    line-height: 162px;
+  }
+
+  .notfound h2 {
+    font-size: 16px;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .notfound .notfound-404 {
+    height: 200px;
+  }
+
+  .notfound .notfound-404 h1 {
+    font-size: 200px;
+  }
+}

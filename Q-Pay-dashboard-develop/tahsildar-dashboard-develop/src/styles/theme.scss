@@ -1,0 +1,49 @@
+@use '@angular/material' as mat;
+$red-palette: (
+  100: #843efd,
+  200: #772ef5,
+  300: #6c1cf7,
+  400: #600df0,
+  500: #5903E9,
+  600: #4d01d1,
+  700: #4700c2,
+  800: #4100b3,
+  900: #3e00a8,
+
+  contrast: (50: rgba(black, 0.87),
+    100: rgba(black, 0.87),
+    200: rgba(black, 0.87),
+    300: white,
+    400: white,
+    500: white,
+    600: white,
+    700: white,
+    800: white,
+    900: white,
+  ),
+);
+
+
+$primary: mat.define-palette($red-palette, 600);
+$accent: mat.define-palette(mat.$blue-palette, A200, A100, A400);
+
+$warn: mat.define-palette(mat.$deep-orange-palette);
+
+$light-theme: mat.define-light-theme((color: (primary: $primary, accent: $accent, warn: $warn ),
+      typography: mat.define-typography-config(),
+      density: 0,
+    ));
+
+$primary-dark: mat.define-palette(mat.$cyan-palette, 500);
+$accent-dark: mat.define-palette(mat.$blue-palette, A200, A100, A400);
+
+$dark-theme: mat.define-dark-theme((color: (primary: $primary-dark, accent: $accent-dark, warn: $warn ),
+      typography: mat.define-typography-config(),
+      density: 0,
+    ));
+
+@include mat.all-component-themes($light-theme);
+
+.dark-theme {
+  @include mat.all-component-colors($dark-theme);
+}

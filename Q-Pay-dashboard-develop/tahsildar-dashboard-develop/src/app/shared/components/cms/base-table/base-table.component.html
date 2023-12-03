@@ -1,0 +1,121 @@
+<div fxLayout="column" class="base-table-container">
+  <!-- Loader -->
+  <ng-container *ngIf="cmsService.loading | async">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </ng-container>
+  <!------------>
+
+  <!-- Table -->
+  <div class="base-table-wrapper">
+    <table fxFlex mat-table [dataSource]="tableDataSource" matSort (matSortChange)="sort($event)" #table>
+      <ng-container *ngFor="let column of cmsConfig.columns" [matColumnDef]="column.key">
+        <!-- Table Header -->
+        <ng-container *ngIf="column.isSortable; else notSortable">
+          <!-- if column is sortable -->
+          <th mat-header-cell *matHeaderCellDef [mat-sort-header]="column.sortKey || column.key" arrowPosition="after">
+            {{ column.name | translate }}
+          </th>
+        </ng-container>
+        <!-- if column not sortable -->
+        <ng-template #notSortable>
+          <th mat-header-cell *matHeaderCellDef>
+            {{ column.name | translate }}
+          </th>
+        </ng-template>
+
+        <!-- Table Data -->
+        <ng-container *ngIf="!(cmsService.loading | async)">
+          <td mat-cell *matCellDef="let element">
+            <ng-container>
+              <div (click)="emitCellAction(column.key, element)"
+                [ngStyle]="column.clickable ? {'cursor': 'pointer'}: {}"
+                [ngClass]="element.cssClass || column.cssClass || ''">
+                <ng-container [ngSwitch]="column.type">
+                  <!-- get value from i18n json file -->
+                  <ng-container *ngSwitchCase="cellType.i18n">
+                    {{ element | PropertyKey:column.key | translate }}
+                  </ng-container>
+
+                  <!-- render as mat-icon -->
+                  <ng-container *ngSwitchCase="cellType.matIcon">
+                    <mat-icon [className]="column.cssClass">{{ element | PropertyKey:column.key }}</mat-icon>
+                  </ng-container>
+
+                  <ng-container *ngSwitchCase="cellType.special">
+                    <!-- display image -->
+                    <ng-container *ngIf="column.special == specialLabels.Image">
+                      <img [src]="element | PropertyKey:column.key">
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-container *ngSwitchCase="cellType.actions">
+                    <!-- display single action -->
+                    <ng-container *ngIf="(cmsConfig.actions || []).length == 1;">
+                      <ng-container *ngIf="cmsConfig.actions![0] as action">
+                        <ng-container *ngIf="action.visible?.(element) != false">
+                          <ng-container *ngIf="!action.icon">
+                            <!-- action button -->
+                            <button mat-button [color]="action.color" (click)="emitRowAction(action.action, element)">
+                              {{ action.label | translate }}
+                            </button>
+                          </ng-container>
+
+                          <ng-container *ngIf="action.icon">
+                            <!-- action icon -->
+                            <button mat-icon-button [color]="action.color" [matTooltip]="action.label | translate"
+                              (click)="emitRowAction(action.action, element)">
+                              <mat-icon>{{ action.icon }}</mat-icon>
+                            </button>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+
+                    </ng-container>
+
+                    <!-- display actions list -->
+                    <ng-container *ngIf="(cmsConfig.actions || []).length > 1">
+                      <button mat-icon-button class="primary" [matMenuTriggerFor]="actionsMenu">
+                        <mat-icon>expand_more</mat-icon>
+                      </button>
+
+                      <!-- actions menu -->
+                      <mat-menu #actionsMenu="matMenu">
+                        <div class="actions" fxLayout="column" fxLayoutAlign="center center">
+                          <ng-container *ngFor="let action of cmsConfig.actions">
+                            <div style="width: 100%;" *ngIf="action.visible?.(element) != false">
+                              <button mat-button [color]="action.color" style="width: 100%;"
+                                (click)="emitRowAction(action.action, element)">
+                                {{ action.label | translate }}
+                              </button>
+                            </div>
+                          </ng-container>
+                        </div>
+                      </mat-menu>
+                    </ng-container>
+                  </ng-container>
+
+                  <!-- display object value -->
+                  <ng-container *ngSwitchDefault>
+                    {{ element | PropertyKey:column.key }}
+                  </ng-container>
+                </ng-container>
+              </div>
+            </ng-container>
+          </td>
+        </ng-container>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+  <!----------->
+
+  <!-- Pagination -->
+  <ng-container *ngIf="!(cmsService.loading | async)">
+    <mat-paginator *ngIf="cmsConfig.pagination != false" [pageSizeOptions]="[10, 25, 50, 100]" [pageSize]="perPage"
+      showFirstLastButtons [length]="totalRows" [pageIndex]="page" (page)="onPageChanged($event)">
+    </mat-paginator>
+  </ng-container>
+  <!--------------->
+</div>

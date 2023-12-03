@@ -1,0 +1,25 @@
+.auto-margin {
+  margin: auto !important;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.space {
+  clear: both;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

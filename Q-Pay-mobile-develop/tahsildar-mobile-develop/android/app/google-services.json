@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "128345247806",
+    "project_id": "tahsildar-ba9c5",
+    "storage_bucket": "tahsildar-ba9c5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:128345247806:android:53cf0de0abaca83048816f",
+        "android_client_info": {
+          "package_name": "com.tradinos.tahsaldar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "128345247806-73r761iidhc2h88kfn012f81pimahdq3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnfqJgTcZ09KWkqhlZSYDTkWh4xCMHE_0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "128345247806-73r761iidhc2h88kfn012f81pimahdq3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

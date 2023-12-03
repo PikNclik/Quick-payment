@@ -1,0 +1,52 @@
+.base-table-container {
+    width: 100%;
+    position: relative;
+
+    mat-progress-bar {
+        position: absolute;
+        z-index: 1000;
+    }
+
+    mat-paginator,
+    table th {
+        background-color: var(--light-background);
+    }
+}
+
+.base-table-wrapper {
+    flex: auto;
+    overflow: auto;
+}
+
+.base-table-wrapper table {
+    table-layout: fixed;
+    width: 100%;
+    align-self: flex-start;
+    overflow-x: auto;
+}
+
+td,
+th {
+    white-space: normal;
+    word-wrap: break-word;
+    width: 200px;
+    text-align: start;
+    justify-content: flex-start;
+}
+
+td div {
+    margin-inline-end: .5rem;
+}
+
+::ng-deep .mat-sort-header-container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}

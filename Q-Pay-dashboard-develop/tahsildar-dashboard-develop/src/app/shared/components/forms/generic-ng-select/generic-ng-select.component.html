@@ -1,0 +1,4 @@
+<ng-select [items]="items" [bindLabel]="config.bindLabel" [bindValue]="config.bindValue" [multiple]="config.multiple" appendTo="body"
+    [placeholder]="config.placeholder| translate" clearAllText="Clear" [(ngModel)]="selectedItems" (search)="getData($event.term)"
+    [searchFn]="searchFn" [loading]="loading" (ngModelChange)="selectedItemsChange.emit(selectedItems)" appearance="outline">
+</ng-select>

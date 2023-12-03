@@ -1,0 +1,44 @@
+mat-drawer-container {
+  width: 100vw;
+  height: 100vh;
+}
+
+mat-drawer {
+  min-width: 250px;
+}
+
+.sidenav-wrapper {
+
+  img {
+    width: 100px;
+    height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;
+    margin-bottom: 15px;
+  }
+
+  .sidenav-list {
+    width: 100%;
+
+    .mat-icon {
+      vertical-align: middle;
+    }
+  }
+}
+
+.sidenav-content {
+  height: 100%;
+}
+
+.active-list-item {
+  background-color: #ebebeba8;
+
+  * {
+    color: var(--primary) !important;
+  }
+
+  span {
+    font-weight: 500;
+  }
+}

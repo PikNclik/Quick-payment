@@ -1,0 +1,21 @@
+:root .dark-theme {
+  --primary: #7C30FA;
+  --background: #272727;
+  --light-background: #373737;
+  --text-color: #fafafa;
+  scrollbar-width: none;
+}
+
+* {
+  transition: background-color .25s linear, color .25s linear;
+}
+
+.dark-theme {
+  .active-list-item {
+    background-color: rgba(156, 156, 156, 0.308) !important;
+  }
+
+  * {
+    transition: background-color .25s linear, color .25s linear;
+  }
+}

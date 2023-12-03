@@ -1,0 +1,106 @@
+<div fxLayout="column" class="statistics-container">
+  <!-- loading -->
+  <ng-container *ngIf="loading || loadingChart">
+    <mat-spinner diameter="35" mode="indeterminate"></mat-spinner>
+  </ng-container>
+
+  <ng-container *ngIf="!loading && !loadingChart">
+    <div fxLayout="row" fxLayoutAlign="space-between">
+      <mat-form-field style="margin-bottom: 0;">
+        <mat-label>{{ 'date' | translate }}</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="date">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker startView="multi-year" (monthSelected)="monthSelected($event, picker)"></mat-datepicker>
+      </mat-form-field>
+
+      <button mat-stroked-button color="primary" (click)="clearDate()">
+        {{ 'clear' | translate }}
+      </button>
+    </div>
+  </ng-container>
+
+  <!-- statistics info -->
+  <div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutGap="32px" fxLayoutGap.lt-sm="0px" fxLayoutAlign="flex-start" *ngIf="!loading && !loadingChart">
+    <ng-container *ngFor="let item of statistics">
+      <!-- statistics card -->
+      <mat-card fxFlex="0 1 calc(33.3% - 32px)" fxFlex.lt-md="0 1 calc(50% - 32px)" fxFlex.lt-sm="100%">
+        <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+          <h1>{{ item.key | translate }}</h1>
+          <p class="medium">{{ item?.currency  == true ?  (item.value | currency : " " ): item.value  }}</p>
+        </mat-card-content>
+      </mat-card>
+
+    </ng-container>
+  </div>
+
+  <mat-divider></mat-divider>
+  <ng-container class="statistics-filters-container" *ngIf="!loading && !loadingChart">
+    <div fxLayout="row" fxLayoutGap="2%"  style="padding-top: 1rem; align-items: baseline;">
+      <mat-form-field style="margin-bottom: 0;">
+        <mat-label>{{ 'start' | translate }}</mat-label>
+        <input matInput [matDatepicker]="start_picker" [(ngModel)]="start">
+        <mat-datepicker-toggle matIconSuffix [for]="start_picker"></mat-datepicker-toggle>
+        <mat-datepicker #start_picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field style="margin-bottom: 0;">
+        <mat-label>{{ 'end' | translate }}</mat-label>
+        <input matInput [matDatepicker]="end_picker" [(ngModel)]="end">
+        <mat-datepicker-toggle matIconSuffix [for]="end_picker"></mat-datepicker-toggle>
+        <mat-datepicker #end_picker></mat-datepicker>
+      </mat-form-field>
+
+      <app-generic-ng-select style="margin-bottom: 0"
+        [config]="ngSelectMerchantConfig!()" [(selectedItems)]="selectedMerchant">
+      </app-generic-ng-select>
+
+      <button mat-stroked-button color="primary" (click)="getChartStatistics()">
+        {{ 'apply' | translate }}
+      </button>
+    </div>
+  </ng-container>
+  <div fxLayout="column" fxLayoutGap="20px"  *ngIf="!loading && !loadingChart">
+    <div fxLayout="row" fxLayoutGap="20px" fxLayout.lt-md="column">
+      <mat-card fxFlex="50">
+        <div #pieContainerRef style="background: white; border-radius: 0.25rem">
+          <h3 class="chart-title">Count Chart:</h3>
+          <ngx-charts-bar-vertical
+            [view]="[pieContainerRef.offsetWidth, 300]"
+            [scheme]="'flame'"
+            [customColors]="customColorsPieChart"
+            [results]="countLineCharts"
+            [gradient]="gradient"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+          >
+          </ngx-charts-bar-vertical>
+        </div>
+      </mat-card>
+      <mat-card fxFlex="50">
+        <div #pieContainerRef style="background: white; border-radius: 0.25rem">
+          <h3 class="chart-title">Sum Chart:</h3>
+          <ngx-charts-bar-vertical
+            [view]="[pieContainerRef.offsetWidth, 300]"
+            [scheme]="'flame'"
+            [customColors]="customColorsPieChart"
+            [results]="sumLineCharts"
+            [gradient]="gradient"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabel"
+            [yAxisLabel]="yAxisLabel"
+          >
+          </ngx-charts-bar-vertical>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+
+</div>

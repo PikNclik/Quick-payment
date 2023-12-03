@@ -1,0 +1,110 @@
+<mat-accordion class="filters-container">
+  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" [expanded]="false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon>search</mat-icon>
+        &nbsp;&nbsp;
+        <h2>{{ 'filters' | translate }}</h2>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <!-- filter inputs -->
+    <div fxLayout="column">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutGap="32px" fxLayoutGap.lt-sm="0px" fxLayoutAlign="flex-start">
+
+        <!-- general search -->
+        <mat-form-field class="filter-input" fxFlex="0 1 calc(33.3% - 32px)" fxFlex.lt-md="0 1 calc(50% - 32px)" fxFlex.lt-sm="100%" *ngIf="filterSchema.query == true">
+          <mat-label>{{ "search" | translate }}...</mat-label>
+          <input matInput type="text" [(ngModel)]="query">
+        </mat-form-field>
+
+        <ng-container *ngFor="let input of filterSchema.inputs">
+          <div fxFlex="0 1 calc(33.3% - 32px)" fxFlex.lt-md="0 1 calc(50% - 32px)" fxFlex.lt-sm="100%">
+            <ng-container [ngSwitch]="true">
+              <!-- text/phone/email/number -->
+              <ng-container *ngSwitchCase="
+              [
+                inputType.text,
+                inputType.email,
+                inputType.number,
+                inputType.phone
+              ].includes(input.inputType)">
+
+                <mat-form-field class="filter-input">
+                  <mat-label>{{ input.label | translate }}</mat-label>
+                  <div fxLayout>
+                    <input matInput [type]="input.inputType" [(ngModel)]="input.value">
+
+                    <!-- material select for filter strategy -->
+                    <ng-container *ngIf="input.with_strategies == true">
+                      <mat-select [(ngModel)]="input.strategy" style="flex: 1;">
+                        <mat-option *ngFor="let x of numberStrategies" [value]="x.value" (ngModelChange)="input.strategy = x.value">
+                          {{ x.label | translate }}
+                        </mat-option>
+                      </mat-select>
+                    </ng-container>
+                  </div>
+                  <!-- end of material select for filter strategy -->
+                </mat-form-field>
+
+              </ng-container>
+
+              <ng-container *ngSwitchCase="[inputType.select, inputType.multi_select].includes(input.inputType)">
+
+                <!-- material select options -->
+                <mat-form-field class="filter-input">
+                  <mat-label>{{ input.label | translate }}</mat-label>
+                  <mat-select [(ngModel)]="input.value" [multiple]="input.inputType == inputType.multi_select">
+                    <mat-option [value]="defaultOption.value">{{ defaultOption.label | translate }}</mat-option>
+                    <mat-option *ngFor="let option of input.options" [value]="option.value" (ngModelChange)="input.value = option.value">
+                      <ng-container *ngIf=" option.label">
+                        {{ option.label | translate }}
+                      </ng-container>
+                    </mat-option>
+                  </mat-select>
+
+                  <!-- loading progressBar -->
+                  <mat-spinner matSuffix mode="indeterminate" diameter="25" *ngIf="input.loading">
+                  </mat-spinner>
+                  <!-- end loading progressBar -->
+                </mat-form-field>
+                <!-- end of material select options -->
+              </ng-container>
+
+              <!-- date picker -->
+              <ng-container *ngSwitchCase="input.inputType == inputType.date">
+                <mat-form-field class="filter-input">
+                  <mat-label>{{ input.label | translate }}</mat-label>
+                  <input matInput [matDatepicker]="picker" [(ngModel)]="input.value">
+                  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </ng-container>
+              <!-- end of date picker -->
+
+              <!-- ng-select -->
+              <ng-container *ngSwitchCase="input.inputType == inputType.ng_select">
+                <ng-container *ngIf="input.ngSelectConfig">
+                  <app-generic-ng-select [config]="input.ngSelectConfig!()" [(selectedItems)]="input.value">
+                  </app-generic-ng-select>
+                </ng-container>
+              </ng-container>
+              <!-- end of ng-select -->
+
+              <ng-container *ngSwitchDefault>
+                <!-- hint error for developer -->
+                filters.component.html cannot handle "{{ input.inputType }}" type,
+                include this type in *ngSwitchCase
+              </ng-container>
+            </ng-container>
+
+          </div>
+        </ng-container>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="end">
+        <button mat-button color="primary" (click)="applyFilters()">{{ 'apply' | translate}}</button>
+        <button mat-button color="primary" (click)="clearFilters()">{{ 'clear' | translate}}</button>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

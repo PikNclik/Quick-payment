@@ -1,0 +1,107 @@
+<div class="form-builder-container" fxLayout="column" style="margin: 2rem;">
+  <!-- title -->
+  <h2 *ngIf="config.title" style="margin-bottom: 1rem;">{{ config.title | translate }}</h2>
+
+  <!-- form -->
+  <form [formGroup]="formGroup" fxLayout="column" fxLayoutGap=".3rem">
+    <!-- Render mat-form-field list -->
+    <ng-container *ngFor="let item of config.formFields">
+      <!-- check each item inputType -->
+      <ng-container [ngSwitch]="true">
+        <!-- file -->
+        <ng-container *ngSwitchCase="[formInputType.file].includes(item.inputType)">
+          <app-file-drag-drop (onFileSelected)="onFileSelected(item, $event)" [imageSrc]="item.defaultValue"
+            [mime]="item.fileConfig?.mimeType" style="padding-bottom: 1.2rem;">
+          </app-file-drag-drop>
+        </ng-container>
+
+        <!-- text/email/number -->
+        <ng-container
+          *ngSwitchCase="[formInputType.text, formInputType.email, formInputType.number, formInputType.password].includes(item.inputType)">
+          <mat-form-field>
+            <mat-label>{{ item.label | translate }}</mat-label>
+            <input [type]="item.inputType" [formControlName]="item.formControlName"
+              (input)="onChange(item, formGroup.controls[item.formControlName].value)" matInput>
+
+            <mat-error>{{ item.label | translate }} {{ "not_valid" | translate }}</mat-error>
+            <span matTextSuffix *ngIf="item.suffix">{{ item.suffix }}</span>
+          </mat-form-field>
+        </ng-container>
+
+        <!-- select -->
+        <ng-container *ngSwitchCase="[formInputType.select, formInputType.multiSelect].includes(item.inputType)">
+          <mat-form-field>
+            <mat-label>{{ item.label | translate }}</mat-label>
+            <mat-select [formControlName]="item.formControlName"
+              [multiple]="formInputType.multiSelect == item.inputType" (selectionChange)="onChange(item, $event.value)">
+              <!-- options -->
+              <mat-option *ngFor="let option of item.selectConfig?.options"
+                [value]="item.selectConfig?.selectOption?.value(option)">
+                <!-- option label -->
+                {{
+                item.selectConfig?.selectOption?.i18n == true ?
+                (item.selectConfig?.selectOption?.label(option) || "-" | translate):
+                item.selectConfig?.selectOption?.label(option) || "-"
+                }}
+              </mat-option>
+            </mat-select>
+            <mat-error>{{ item.label | translate }} {{ "not_valid" | translate }}</mat-error>
+
+            <!-- progressBar -->
+            <mat-spinner matSuffix mode="indeterminate" diameter="25" *ngIf="item.selectConfig?.loading">
+            </mat-spinner>
+          </mat-form-field>
+        </ng-container>
+
+        <!-- CheckBox -->
+        <ng-container *ngSwitchCase="item.inputType == formInputType.checkbox">
+          <mat-checkbox [checked]="item.defaultValue" [formControlName]="item.formControlName" color="primary"
+            (ngModelChange)="onChange(item, $event)">
+            {{ item.label | translate }}
+          </mat-checkbox>
+        </ng-container>
+
+        <!-- Toggle -->
+        <ng-container *ngSwitchCase="item.inputType == formInputType.toggle">
+          <mat-slide-toggle [checked]="item.defaultValue" [formControlName]="item.formControlName" color="primary"
+            (ngModelChange)="onChange(item, $event)" style="padding-bottom: 1rem;">
+            {{ item.label | translate }}
+          </mat-slide-toggle>
+        </ng-container>
+
+        <!-- date picker -->
+        <ng-container *ngSwitchCase="item.inputType == formInputType.date">
+          <mat-form-field>
+            <mat-label>{{ item.label | translate }}</mat-label>
+            <input matInput [matDatepicker]="picker" [min]="item.datePickerConfig?.minDate"
+              [max]="item.datePickerConfig?.maxDate" [formControlName]="item.formControlName"
+              (input)="onChange(item, formGroup.controls[item.formControlName].value)">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </ng-container>
+
+        <!-- ng-select -->
+        <ng-container *ngSwitchCase="item.inputType == formInputType.ngSelect">
+          <ng-container *ngIf="item.ngSelectConfig">
+            <app-generic-ng-select [config]="item.ngSelectConfig!()" [selectedItems]="item.defaultValue"
+              (selectedItemsChange)="onNgSelectChange(item, $event)">
+            </app-generic-ng-select>
+          </ng-container>
+        </ng-container>
+
+        <ng-container *ngSwitchDefault>
+          <!-- hint error for developer -->
+          generic-form-builder.component.html cannot handle "{{ item.inputType }}" type,
+          include this type in *ngSwitchCase
+        </ng-container>
+
+      </ng-container>
+    </ng-container>
+
+    <button mat-stroked-button color="primary" [disabled]="formGroup.invalid" (click)="submit()" class="btn-height"
+      *ngIf="config.submitButton != false">
+      {{ 'submit' | translate }}
+    </button>
+  </form>
+</div>

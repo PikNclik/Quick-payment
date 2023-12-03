@@ -1,0 +1,36 @@
+<div class="login-container" fxLayout="row">
+  <div class="login-image" fxLayoutAlign="center center" fxFlex fxHide.lt-md>
+    <img src="./assets/images/login.png">
+  </div>
+  <div class="login-form-wrapper" fxLayoutAlign="center center" fxFlex>
+    <mat-card fxFlex="75">
+      <!-- loading progress -->
+      <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+
+      <!-- login form -->
+      <form fxLayout="column" fxLayoutGap="2rem" fxLayoutAlign="center center" [formGroup]="formGroup">
+        <h1>Tahsildar</h1>
+
+        <!-- username -->
+        <mat-form-field>
+          <mat-label>{{ "username" | translate }}</mat-label>
+          <input type="username" formControlName="username" matInput>
+          <mat-error>{{ "username" | translate }} {{ "is_required" | translate }}</mat-error>
+        </mat-form-field>
+
+        <!-- password -->
+        <mat-form-field>
+          <mat-label>{{ "password" | translate }}</mat-label>
+          <input type="password" formControlName="password" matInput>
+          <mat-error>{{ "password" | translate }} {{ "is_required" | translate }}</mat-error>
+        </mat-form-field>
+
+        <!-- submit -->
+        <button class="btn-height" mat-stroked-button color="primary" [disabled]="formGroup.invalid || loading"
+          (click)="login()">
+          {{ "login" | translate }}
+        </button>
+      </form>
+    </mat-card>
+  </div>
+</div>

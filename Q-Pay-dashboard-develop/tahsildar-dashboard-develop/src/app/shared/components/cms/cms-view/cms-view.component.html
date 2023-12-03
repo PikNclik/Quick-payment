@@ -1,0 +1,11 @@
+<div class="cms-view-container" fxLayout="column">
+  <!-- Loader -->
+  <div class="loader" fxLayout *ngIf="loading">
+    <mat-spinner mode="indeterminate" diameter="25"></mat-spinner>
+  </div>
+
+  <!-- HTML content -->
+  <ng-container *ngIf="template && !loading">
+    <ng-container [ngTemplateOutlet]="template"></ng-container>
+  </ng-container>
+</div>

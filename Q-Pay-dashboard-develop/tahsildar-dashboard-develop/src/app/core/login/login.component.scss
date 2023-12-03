@@ -1,0 +1,14 @@
+.login-form-wrapper {
+  height: 100vh;
+
+  mat-card {
+    form {
+      padding: 3rem;
+
+      mat-form-field,
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

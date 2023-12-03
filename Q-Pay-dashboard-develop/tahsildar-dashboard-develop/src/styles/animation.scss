@@ -1,0 +1,42 @@
+/* Animations */
+p {
+  animation: .45s ease-out 0s 1 fadeSlideIn;
+}
+
+img {
+  border-radius: 6px;
+  animation-name: fadeIn;
+  animation-duration: .75s;
+  animation-timing-function: ease-in;
+}
+
+.fadeIn {
+  animation: 0.5s ease-out 0s 1 fadeIn;
+}
+
+.fadeSlideIn {
+  animation: 0.5s ease-out 0s 1 fadeSlideIn;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

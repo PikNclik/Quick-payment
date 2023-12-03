@@ -1,0 +1,18 @@
+.cms-container {
+    height: calc(100vh - 64px);
+
+    app-base-table {
+        display: flex;
+        flex: auto;
+        overflow: auto;
+    }
+
+  .export-button{
+    margin: 1rem;
+  }
+
+}
+
+.cms-container app-filters {
+    margin-bottom: .25rem;
+}

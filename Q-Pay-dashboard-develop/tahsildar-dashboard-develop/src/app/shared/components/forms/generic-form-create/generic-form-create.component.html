@@ -1,0 +1,5 @@
+<div fxLayout="column">
+    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+    <app-generic-form-builder #formBuilder [formConfig]="formConfig" [loading]="loading" (onSumbit)="onSubmit($event)">
+    </app-generic-form-builder>
+</div>

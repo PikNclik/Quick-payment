@@ -1,0 +1,12 @@
+.cms-view-container {
+  height: 100%;
+  width: 100%;
+
+  .loader {
+    height: 100%;
+
+    mat-spinner {
+      margin: auto;
+    }
+  }
+}

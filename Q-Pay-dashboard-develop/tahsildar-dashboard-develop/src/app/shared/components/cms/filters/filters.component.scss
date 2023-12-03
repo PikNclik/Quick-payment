@@ -1,0 +1,26 @@
+.filters-container {
+  mat-panel-title h2 {
+    color: gray;
+    margin: 0;
+  }
+
+  mat-panel-title mat-icon {
+    color: gray;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+
+::ng-deep .filters-container {
+  app-generic-ng-select .ng-select {
+    margin-top: -5px;
+    .ng-select-container.ng-appearance-outline {
+      min-height: 60px !important;
+    }
+  }
+}

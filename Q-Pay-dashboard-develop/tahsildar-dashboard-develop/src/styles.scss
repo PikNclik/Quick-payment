@@ -1,0 +1,107 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'styles/animation.scss';
+@import 'styles/colors.scss';
+@import 'styles/custom.scss';
+@import 'styles/dark_theme.scss';
+@import 'styles/dimensions.scss';
+@import 'styles/flex.scss';
+@import 'styles/global.scss';
+@import 'styles/media.scss';
+@import 'styles/theme.scss';
+@import 'styles/scroll-theme.scss';
+@import "~@ng-select/ng-select/themes/material.theme.css";
+
+html,
+body {
+  height: 100%;
+  overflow-y: hidden;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.ng-select {
+  padding-bottom: 22px !important;
+}
+
+.ng-select.ng-invalid.ng-touched .ng-select-container .ng-placeholder,
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected,
+.ng-select.ng-select-focused .ng-select-container .ng-value-container .ng-placeholder,
+.ng-select.ng-select-focused .ng-select-container {
+  color: var(--primary) !important;
+
+  .ng-arrow-wrapper .ng-arrow {
+    color: var(--primary) !important;
+  }
+}
+
+.ng-select.ng-select-multiple .ng-select-container {
+  .ng-value-container {
+    .ng-value {
+      background-color: var(--primary);
+    }
+  }
+
+  .ng-spinner-loader {
+    margin: auto .5rem;
+    top: 3px;
+  }
+}
+
+.ng-select.ng-select-single.ng-select-focused .ng-select-container {
+  .ng-placeholder {
+    padding: 0 0.25em !important;
+  }
+}
+
+.ng-select.ng-select-single .ng-select-container {
+  .ng-placeholder {
+    padding: 6px 0.25em !important;
+  }
+}
+
+.ng-select.ng-select-single .ng-select-container.ng-appearance-outline {
+
+  .ng-input {
+    position: unset !important;
+    display: flex;
+    flex: 1;
+    padding: inherit !important;
+  }
+
+  .ng-clear-wrapper,
+  .ng-arrow-wrapper {
+    bottom: unset !important;
+    margin: auto;
+  }
+
+  .ng-spinner-loader {
+    top: 2px;
+  }
+
+  .ng-clear-wrapper {
+    top: 3px;
+  }
+
+  .ng-value {
+    display: flex;
+
+    .ng-value-label {
+      margin: auto;
+    }
+  }
+
+  .ng-spinner-loader {
+    margin: auto .5rem;
+  }
+}
+
+.ng-select .ng-select-container.ng-appearance-outline::after,
+.ng-select .ng-select-container::after {
+  border-color: #666666 !important;
+}
+
+.ng-select.ng-select-focused .ng-select-container.ng-appearance-outline::after,
+.ng-select.ng-select-focused .ng-select-container.ng-appearance-outline:hover:after,
+.ng-select.ng-select-focused .ng-select-container::after {
+  border-color: var(--primary) !important;
+}

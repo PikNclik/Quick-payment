@@ -1,0 +1,23 @@
+.cms-create-container {
+  app-generic-form-create {
+    width: 100%;
+  }
+
+  button {
+    margin-bottom: 2rem;
+    width: calc(100% - 8rem);
+
+    span {
+      width: 100%;
+    }
+
+    mat-icon {
+      padding-inline-end: .5rem
+    }
+  }
+}
+
+::ng-deep .cms-create-container app-generic-form-create .form-builder-container {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}

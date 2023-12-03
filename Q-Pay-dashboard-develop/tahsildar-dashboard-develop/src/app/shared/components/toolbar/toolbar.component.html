@@ -1,0 +1,15 @@
+<mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+  <!-- Drawer icon -->
+  <button mat-icon-button (click)="toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  {{ getTitle() }}
+
+  <div fxLayout="row" fxLayoutGap="1rem">
+    <!-- logOut -->
+    <button mat-stroked-button (click)="logOut()">
+      {{ 'logout' | translate }}
+    </button>
+  </div>
+</mat-toolbar>

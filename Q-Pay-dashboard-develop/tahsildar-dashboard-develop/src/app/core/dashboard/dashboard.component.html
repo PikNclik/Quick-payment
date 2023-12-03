@@ -1,0 +1,31 @@
+<div i18n-dir [dir]="(translationService.langDir$ | async) || 'ltr'" #layout>
+  <mat-drawer-container class="container" autosize>
+    <mat-drawer #drawer class="sidenav background-primary" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+
+      <!------------->
+      <!-- Sidenav -->
+      <!------------->
+      <div class="sidenav-wrapper" fxLayout="column" fxLayoutAlign="center center">
+        <img src='assets/images/login.png' />
+        <mat-nav-list class="sidenav-list">
+          <ng-container *ngFor="let item of navItems">
+            <a mat-list-item [routerLink]="item.route" routerLinkActive="active-list-item">
+              <span>&nbsp;{{ item.title | translate }}</span>
+            </a>
+          </ng-container>
+        </mat-nav-list>
+      </div>
+
+    </mat-drawer>
+
+    <!------------->
+    <!-- Content -->
+    <!------------->
+    <div class="sidenav-content" >
+      <app-toolbar></app-toolbar>
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-container>
+</div>

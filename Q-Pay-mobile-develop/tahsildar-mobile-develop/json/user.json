@@ -1,0 +1,15 @@
+{
+  "message": "Welcome admin",
+  "status": true,
+  "data": {
+    "user": {
+      "id": 1,
+      "username": "admin",
+      "email_verified_at": null,
+      "created_at": "2023-02-15T12:39:58.000000Z",
+      "updated_at": "2023-02-15T12:39:58.000000Z",
+      "accessToken": "2a43290a4ab6e31db355cb71868fa2f63698de2c2b27bd5d98368e5c5e36043b"
+    }
+  },
+  "status_code": 200
+}

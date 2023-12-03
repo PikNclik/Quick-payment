@@ -1,0 +1,27 @@
+:root {
+  --primary: #5903E9;
+  --background: #fafafa;
+  --light-background: #f4f4f4;
+  --text-color: #272727;
+  scrollbar-width: none;
+}
+
+.primary {
+  color: var(--primary);
+}
+
+.lightgray {
+  color: lightgray;
+}
+
+.darkgrey {
+  color: darkgrey;
+}
+
+.danger {
+  color: red;
+}
+
+.background-primary {
+  background-color: var(--primary);
+}

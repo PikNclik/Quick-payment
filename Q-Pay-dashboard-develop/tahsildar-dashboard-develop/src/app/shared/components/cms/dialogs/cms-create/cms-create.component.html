@@ -1,0 +1,13 @@
+<div class="cms-create-container" fxLayout="column" fxLayoutAlign="center center">
+  <app-generic-form-create #form [formConfig]="formConfig" [loading]="loading"></app-generic-form-create>
+
+  <ng-container *ngIf="formConfig.formGroup">
+    <button mat-stroked-button class="btn-height" color="primary" (click)="onSubmit()"
+      [disabled]="formConfig.formGroup.invalid || loading">
+      <mat-icon *ngIf="loading">
+        <mat-spinner color="primary" diameter="16"></mat-spinner>
+      </mat-icon>
+      {{ 'submit' | translate }}
+    </button>
+  </ng-container>
+</div>

@@ -1,0 +1,24 @@
+<div class="cms-container" fxLayout="column">
+  <ng-container *ngIf="cmsService.cmsConfig.exportable">
+    <div fxLayout="row" fxLayoutAlign="end center" class="export-button">
+      <ng-content select="[topActions]"></ng-content>
+      <button mat-button (click)="export()" color="primary">Export Excel</button>
+    </div>
+  </ng-container>
+
+  <!-- Table Filter -->
+  <ng-container *ngIf="cmsService.filterSchema">
+    <app-filters></app-filters>
+  </ng-container>
+  <!------------------>
+
+  <!-- Table -->
+  <app-base-table (onRowAction)="emitRowAction($event)"></app-base-table>
+  <!----------->
+
+  <!-- Create new entity -->
+  <button mat-fab color="primary" (click)="newItem()" *ngIf="cmsConfig?.canAddNewEntity?.() == true">
+    <mat-icon style="color: #fff;">add</mat-icon>
+  </button>
+  <!----------------------->
+</div>

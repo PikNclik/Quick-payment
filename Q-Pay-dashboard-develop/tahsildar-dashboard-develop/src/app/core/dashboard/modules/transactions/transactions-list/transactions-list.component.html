@@ -1,0 +1,8 @@
+<div fxLayout="column">
+  <app-cms-list>
+    <div topActions>
+      <input type="file" accept=".xlsx" #file hidden (change)="handleFileInput($event)">
+      <button mat-button (click)="file.click()" color="primary">Import Excel</button>
+    </div>
+  </app-cms-list>
+</div>
