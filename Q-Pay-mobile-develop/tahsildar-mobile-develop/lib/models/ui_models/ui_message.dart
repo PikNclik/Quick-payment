@@ -7,6 +7,7 @@ enum UiMessageState { success, error, initial }
 class UiMessage {
   String? message;
   String? action;
+  Function? callBack;
   UiMessageState state;
-  UiMessage({this.message, this.action, this.state = UiMessageState.initial});
+  UiMessage({this.message, this.action, this.state = UiMessageState.initial,this.callBack});
 }

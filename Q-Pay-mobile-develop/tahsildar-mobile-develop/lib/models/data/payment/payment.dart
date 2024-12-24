@@ -4,6 +4,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:tahsaldar/network/config/env.dart';
 
+import '../customer/customer.dart';
+
 part 'payment.freezed.dart';
 part 'payment.g.dart';
 
@@ -31,7 +33,9 @@ class Payment with _$Payment {
     int? id,
     String? payerName,
     String? payerMobileNumber,
-    int? amount,
+    Customer? customer,
+    num? amount,
+    num? feesValue,
     String? details,
     int? status,
     DateTime? expiryDate,
@@ -52,11 +56,11 @@ class Payment with _$Payment {
 //EXPIRED = 4;
 //CANCELLED = 5;
 //REFUNDED = 6
-Map<int, String> transactionStatuses = {1: 'pending', 2: 'scheduled', 3: 'paid', 4: 'expired', 5: 'canceled', 6: 'refunded'};
+Map<int, String> transactionStatuses = {1: 'pending', 2: 'scheduled', 3: 'paid', 4: 'expired', 5: 'canceled', 6: 'refunded',7:'settled'};
 
 extension PaymentExtensions on Payment {
   //todo check refunded status number
-  bool isNotDeletable() => status == 5 || status == 6;
+  bool isNotDeletable() => status is int &&  (status as int) > 3;
 
   String get link => "${Env.baseUrl}/payForm/$uuid";
 }

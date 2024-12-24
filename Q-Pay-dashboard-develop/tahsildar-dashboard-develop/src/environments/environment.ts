@@ -2,7 +2,7 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-const baseUrl = "https://tahsildar-back-dev.8byteslab.com";
+const baseUrl = "http://localhost:8000";
 
 export const environment = {
   production: false,
@@ -13,7 +13,7 @@ export const environment = {
   dialogHeight: '750px',
   dateFormat: 'yyyy/MM/dd',
   datetimeFormat: 'yyyy/MM/dd hh:mm a',
-  titlePrefix: 'Tahsildar',
+  titlePrefix: 'Qpay',
 };
 
 /*

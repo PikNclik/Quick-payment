@@ -1,3 +1,8 @@
+{{-- International code to be removed --}}
+@php
+    $internationalCode = "+963";
+@endphp
+
 <html>
 <style>
     #invoice-POS {
@@ -126,7 +131,7 @@
         margin: 30px auto;
         border-radius: 0;
         border: none;
-        background: #42C2DF;
+        background: #6C1776;
         color: white;
         font-size: 20px;
         transition: background 0.4s;
@@ -137,23 +142,29 @@
 <head>
     <meta name="viewport" content="initial-scale=1">
 </head>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+@php
+    $variable = '';
+@endphp
 <body>
-    <form action="{{ route('pay', $payment->uuid)}}">
+    <form method="post" action="{{ route('pay', $payment->uuid,$variable)}}">
+        @csrf
     <div id="invoice-POS">
         <center id="top">
-            <div class="logo" style="background-image: url({{count($payment->user->media) > 0 ? $payment->user->media[0]->original_url :'http://michaeltruong.ca/images/logo1.png'}});"></div>
+        <div class="logo" style="background-image: url({{asset('images/logo.jpg')}});"></div>
             <div class="info">
-                <h2>{{ $payment['payer_name'] }}</h2>
+            <h2><span style="color: #6C1776">{{__('payment.payment_request_from')}}</span></h2>
+            <h2>{{ $payment->user->full_name}}</h2>
             </div><!--End Info-->
         </center><!--End InvoiceTop-->
         <div id="mid">
             <div class="info">
-                <h2>{{__('payment.contact_info')}}</h2>
+                <h2 style="color: #6C1776">{{__('payment.contact_info')}}</h2>
                 <p>
                     {{$payment->user->city ? $payment->user->city->name : '-'}}</br>
                     {{$payment->user->email ?? '-'}}</br>
-                    {{$payment->user->phone}}</br>
+                    {{-- Remove the international code --}}
+                    {{ str_replace($internationalCode, '0', $payment->user->phone) }}</br>
                 </p>
             </div>
         </div><!--End Invoice Mid-->
@@ -162,7 +173,7 @@
             <div id="table">
                 <table>
                     <tr class="tabletitle">
-                        <td class="item">
+                        <td style="color: #6C1776" class="item">
                             {{__('payment.payment_details')}}
                         </td>
                     </tr>
@@ -173,42 +184,98 @@
                             </p>
                         </td>
                     </tr>
-                    <tr class="tabletitle">
+                    <tr class="tabletitle" @if($language == 'ar')style="direction: rtl;" @endif>
                         <td>
-                            <span style="width: 10ch; display: inline-block">{{__('payment.amount')}}</span>
+                            <span style="width: 14ch; display: inline-block; color: #6C1776">{{__('payment.amount')}}</span>
 
-                            {{$payment['amount'] }}
+                            {{number_format($payment['amount']) }} {{__('payment.currency')}}
                         </td>
                     </tr>
 
-                    <tr class="tabletitle">
+                    <tr class="tabletitle" @if($language == 'ar')style="direction: rtl;" @endif>
                         <td>
-                            <span style="width: 10ch; display: inline-block">{{__('payment.fees')}}</span>
+                            <span style="width: 14ch; display: inline-block; color: #6C1776">{{__('payment.fees')}}</span>
 
-                            {{$payment['fees_value'] }}
+                            {{number_format($payment['fees_value']) }} {{__('payment.currency')}}
                         </td>
                     </tr>
 
-                    <tr class="tabletitle">
+                    <tr class="tabletitle" @if($language == 'ar')style="direction: rtl;" @endif>
                         <td class="payment">
-                            <span style="width: 10ch; display: inline-block">{{__('payment.total')}}</span>
+                            <span style="width: 14ch; display: inline-block; color: #6C1776">{{__('payment.total')}}</span>
 
-                            {{$payment['amount'] + $payment['fees_value']}}
+                            {{number_format($payment['amount'] + $payment['fees_value'])}} {{__('payment.currency')}}
+                            @if($payment['payment_type'] != 'NORMAL')
+                            <a class="btn" onclick="toggleDiv()"><i class="fa fa-edit"></i></a>
+                            <div id="toggleDiv" class="hidden">
+                                <input type="number" min="20" step="1" max="{{$payment['amount'] + $payment['fees_value']}}" id="inputVariable" >
+                                <input id="part" name="part" hidden="true">
+                                <button type="button" onclick="editPrice()">تعديل السعر</button>
+                            </div>
+                             @endif
                         </td>
                     </tr>
+                    <tr id="part_payment"  class="tabletitle" style="@if($payment['actual_payment'] == null || $payment['actual_payment'] == $payment['amount']) display: none;@endif  @if($language == 'ar') direction: rtl; @endif" >
+                        <td class="payment">
+                            <span  style="width: 14ch; display: inline-block; color: #6C1776">المبلغ الجزئي</span>
+                            <span id="partPaymentDisplay">{{$payment['actual_payment'] }}</span>
+                            <span> {{__('payment.currency')}}</span>
+                        </td>
+                    </tr>
+                    <tr id="part_fee"  class="tabletitle" style="@if($payment['actual_payment'] == null || $payment['actual_payment'] == $payment['amount']) display: none; @endif   @if($language == 'ar') direction: rtl; @endif" >
+                        <td class="payment">
+                            <span  style="width: 14ch; display: inline-block; color: #6C1776">الرسوم الجزئية</span>
+                            <span id="partFeeDisplay">{{$payment['actual_fee'] }} </span>
+                            <span> {{__('payment.currency')}}</span>
 
+                        </td>
+                    </tr>
                 </table>
 
             </div><!--End Table-->
             <div id="legalcopy">
-                <p class="legal"><strong>{{__('payment.thank_you_for_your_business')}}</strong> {{__('payment.payment_expected_within_31_days')}}
+                <p class="legal"><strong>{{__('payment.payment_pay_button_details')}}</strong>
                 </p>
+                <p  style="color: #6C1776" class="legal"><strong>{{__('payment.payment_banks_details')}}</strong>
+                </p>
+
             </div>
             <button class="buy" type="submit">{{__('payment.pay')}}</button>
         </div>
     </div>
 </form><!--End InvoiceBot-->
 </body>
+<style>
+    .hidden {
+        display: none;
+    }
+</style>
+<script>
 
+    function toggleDiv() {
+        var div = document.getElementById("toggleDiv");
+        if (div.classList.contains("hidden")) {
+            div.classList.remove("hidden");
+        } else {
+            div.classList.add("hidden");
+        }
+    }
+
+    function editPrice() {
+       const editedPrice = document.getElementById('inputVariable').value;
+       const intPrice = Number.parseInt(editedPrice);
+        if (intPrice >= {{$payment['amount'] + $payment['fees_value']}}){
+            alert("لا يمكن ان يكون المبلغ الجزئي اكبر من المبلغ الاجمالي");
+            return;
+        }
+        toggleDiv();
+        document.getElementById('partPaymentDisplay').innerText = intPrice.toString();
+        document.getElementById('partFeeDisplay').innerText = {{$payment['fees_percentage']}} == 0 ? 0 :  (intPrice / {{$payment['fees_percentage']}}).toString();
+        document.getElementById('part').value = intPrice;
+        document.getElementById('part_payment').style.display = '';
+        document.getElementById('part_fee').style.display = '';
+
+    }
+</script>
 </html>
 

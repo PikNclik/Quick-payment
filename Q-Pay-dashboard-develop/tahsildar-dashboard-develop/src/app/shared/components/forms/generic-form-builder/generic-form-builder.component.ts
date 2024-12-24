@@ -20,18 +20,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { GenericNgSelectComponent } from '../generic-ng-select/generic-ng-select.component';
-
-export const MY_DATE_FORMAT = {
-  parse: {
-    dateInput: "YYYY-MM-DD",
-  },
-  display: {
-    dateInput: "YYYY-MM-DD",
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
-  },
-};
+import { MY_DATE_FORMAT } from 'src/app/core/dashboard/configuration/date-format';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-generic-form-builder',
@@ -175,7 +165,10 @@ export class GenericFormBuilderComponent<T> {
   public onChange(formField: FormFieldData, event: any) {
     if (formField.onChange) formField.onChange!(this.formGroup, event);
   }
-
+  
+  onDateChange(formField: FormFieldData,event: any) {
+    if (formField.onDateSelect) formField.onDateSelect!(this.formGroup, event.value);
+  }
   /**
    * update formGroup control with new ng-select value
    *
@@ -184,5 +177,7 @@ export class GenericFormBuilderComponent<T> {
    */
   public onNgSelectChange(formField: FormFieldData, event: any): void {
     this.formGroup.controls[formField.formControlName]?.setValue(event);
+    if (formField.onChange) formField.onChange!(this.formGroup, event);
+
   }
 }

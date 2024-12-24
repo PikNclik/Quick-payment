@@ -20,6 +20,7 @@ class AutoCompleteTextField extends StatefulWidget {
   final List<AutoCompleteItemModel> items;
   final Function(AutoCompleteItemModel?)? onItemSelected;
   final Function(String)? onTextChange;
+  final Function(String?)? validation;
   final TextAlign? textAlign;
   final String? defaultValue;
   final bool openOnFocus;
@@ -47,6 +48,7 @@ class AutoCompleteTextField extends StatefulWidget {
     this.dropdownArrow = false,
     this.errorOnFocus = false,
     this.direction,
+    this.validation,
     this.suffix,
     this.suffixIconConstraints,
     this.prefix,
@@ -148,6 +150,7 @@ class AutoCompleteTextFieldState extends State<AutoCompleteTextField> with Singl
               prefix: widget.prefix,
               prefixIcon: widget.prefixIcon,
               prefixIconConstraints: widget.prefixIconConstraints ?? const BoxConstraints(maxWidth: 35, maxHeight: 35),
+
             ),
           ),
           noItemsFoundBuilder: (context) {
@@ -204,6 +207,7 @@ class AutoCompleteTextFieldState extends State<AutoCompleteTextField> with Singl
           onInfiniteScroll: () {
             widget.onInfiniteScroll?.call();
           },
+          validator: (value) => widget.validation?.call(value),
         );
       },
     );

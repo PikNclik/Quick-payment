@@ -1,0 +1,19 @@
+.container {
+    display: flex;
+    gap: 20px;
+}
+
+.column {
+    flex: 1; 
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    padding: 20px;
+}
+.btns {
+    padding: 20px;
+}
+.created {
+    background-color: #f1f1f1;
+    border-radius: 8px;
+    padding: 20px;
+}

@@ -65,7 +65,7 @@ class _MainScreenState extends State<MainScreen> with InstanceState<MainScreen, 
       splashColor: DesignColors.purple3,
       backgroundColor: DesignColors.primaryColor,
       child: SvgPicture.asset('add-square'.svgAsset, color: Colors.white),
-      onPressed: () => appRouter.push(const AddPayment()),
+      onPressed: () => appRouter.push( AddPayment()),
     );
   }
 

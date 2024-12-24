@@ -15,4 +15,7 @@ return [
     'cancel' => 'Transaction has been canceled successfully. ',
     'block' => 'User has been blocked successfully. ',
     'sent_verify_code' => 'Verify Code sent successfully. ',
+    'store_payment' => 'Payment has been created successfully.',
+    'execute' => 'Execute has been done successfully.',
+    'reset_password_request' => 'Code senty Successfully'
 ];

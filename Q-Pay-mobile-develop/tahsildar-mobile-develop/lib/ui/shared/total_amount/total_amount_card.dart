@@ -8,18 +8,21 @@ import 'package:tahsaldar/models/data_models.dart';
 import 'package:tahsaldar/ui/shared/total_amount/filter_widget.dart';
 import 'package:tahsaldar/ui/widgets/filter/filter.dart';
 
+import '../../../utils/fake_utils.dart';
 import '../../resources/text_styles/text_styles.dart';
 
 class TotalAmountCard extends StatelessWidget {
+  final bool isTransfer;
   final MutableLiveData<String> month;
   final MutableLiveData<String> year;
   final TotalPaid totalPaid;
   final Function() filter;
-  const TotalAmountCard({
+   const TotalAmountCard({
     required this.month,
     required this.year,
     required this.totalPaid,
     required this.filter,
+     this.isTransfer=false,
     Key? key,
   }) : super(key: key);
 
@@ -41,19 +44,22 @@ class TotalAmountCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text('paid_amount'.tr(), style: body1.copyWith(color: Colors.white)),
+                  if(!isTransfer)
+                    Text('pending_amount'.tr(), style: body2.copyWith(color: Colors.white)),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          Text(
-                            totalPaid.paid?.totalAmount.toString().formatNumber() ?? "",
-                            style: boldText.copyWith(color: Colors.white),
-                          ),
-                          Text(' ${'sp'.tr()}', style: headline1.copyWith(color: Colors.white)),
-                        ],
-                      ),
+                      if(!isTransfer)
+                        Row(
+                          children: [
+                            Text(
+                              totalPaid.pending?.totalAmount.toString().formatNumber() ?? "",
+                              style: headline2.copyWith(color: Colors.white),
+                            ),
+                            Text(' ${FakeUtil.getCurrency()}', style: headline1.copyWith(color: Colors.white)),
+                          ],
+                        ),
                       const SizedBox(width: 10.0),
                       Row(
                         children: [
@@ -84,16 +90,18 @@ class TotalAmountCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  Text('pending_amount'.tr(), style: body2.copyWith(color: Colors.white)),
+                  Text(isTransfer?'transfer_values'.tr():'paid_amount'.tr(), style: body1.copyWith(color: Colors.white)),
                   Row(
                     children: [
                       Text(
-                        totalPaid.pending?.totalAmount.toString().formatNumber() ?? "",
-                        style: headline2.copyWith(color: Colors.white),
+                        totalPaid.paid?.totalAmount.toString().formatNumber() ?? "",
+                        style: boldText.copyWith(color: Colors.white),
                       ),
-                      Text(' ${'sp'.tr()}', style: headline1.copyWith(color: Colors.white)),
+                      Text(' ${FakeUtil.getCurrency()}', style: headline1.copyWith(color: Colors.white)),
                     ],
                   ),
+                  const SizedBox(height: 16),
+
                 ],
               ),
             ],

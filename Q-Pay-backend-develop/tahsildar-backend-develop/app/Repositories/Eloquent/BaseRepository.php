@@ -83,7 +83,7 @@ class BaseRepository implements RepositoryInterface
         }
 
         if (count($joinsArray)) {
-            $this->joinaTbles($query, $joinsArray);
+            $this->joinTables($query, $joinsArray);
         }
 
         if ($search != null) {
@@ -544,11 +544,12 @@ class BaseRepository implements RepositoryInterface
      * Create or update a model.
      *
      * @param array $payload
+     * @param array $values
      * @return BaseModel|null
      */
-    public function updateOrCreate(array $payload): ?Model
+    public function updateOrCreate(array $payload,array $values = []): ?Model
     {
-        $model = $this->model->updateOrCreate($payload);
+        $model = $this->model->updateOrCreate($payload,$values);
 
         return $model->fresh();
     }
@@ -652,7 +653,7 @@ class BaseRepository implements RepositoryInterface
      * @param $payload
      * @return array
      */
-    private function getModelRelations(&$payload)
+    protected function getModelRelations(&$payload)
     {
         //Get Model (Many To Many) Relation Names.
         $modelRelations = $this->model->getManyToManyRelations();

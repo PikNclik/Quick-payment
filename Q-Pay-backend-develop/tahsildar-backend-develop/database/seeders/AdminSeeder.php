@@ -16,11 +16,20 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        Admin::query()->create(
+        $super_admin = Admin::query()->create(
             [
-                'username' => 'admin',
-                'password' => Hash::make('123456')
+                'username' => 'super_admin',
+                'password' => Hash::make('^4i3a@O2{Qkj')
             ]
         );
+        $super_admin->createToken('user-auth-token', ['super_admin','admin']);
+
+        $admin = Admin::query()->create(
+            [
+                'username' => 'admin',
+                'password' => Hash::make('^4i3a@O2{Qkj')
+            ]
+        );
+        $admin->createToken('user-auth-token', ['admin']);
     }
 }

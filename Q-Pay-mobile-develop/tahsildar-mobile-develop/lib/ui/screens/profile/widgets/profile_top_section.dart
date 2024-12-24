@@ -21,9 +21,9 @@ class ProfileTopSection extends StatelessWidget {
             //  Image.asset('profile'.pngAsset),
             Text(user.fullName ?? "", style: headline1),
             const SizedBox(height: 4),
-            Text(user.phone ?? "", style: title3),
+            Text(user.phone.toString().replaceAll("+963", "0"), style: title3),
             const SizedBox(height: 4),
-            Text(user.bank?.name ?? "", style: title3),
+            Text(user.bankName(), style: title3),
           ]);
         });
   }

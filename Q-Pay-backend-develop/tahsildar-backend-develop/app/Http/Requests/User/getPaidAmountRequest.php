@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\User;
 
+use App\Definitions\PaymentTypeEnums;
 use App\Models\Payment;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class getPaidAmountRequest extends FormRequest
 {
@@ -39,6 +41,7 @@ class getPaidAmountRequest extends FormRequest
                 return[
                     'month' => ['required', 'string', 'size:2', 'between:01,12'],
                     'year' => ['required', 'string', 'size:4'],
+                    'type' => ['required',Rule::in(PaymentTypeEnums::TYPES)]
                 ];
             case 'PATCH':
             case 'DELETE':

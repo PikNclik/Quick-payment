@@ -1,0 +1,32 @@
+<h2 mat-dialog-title><h2>{{ "audit" | translate }}</h2></h2>
+<mat-dialog-content class="mat-typography">
+
+    <div class="container" *ngIf="data.audit.event=='updated'">
+        <div class="column">
+            <h2>{{ "old_values" | translate }}</h2>
+            <div *ngFor="let key of oldValuesKeys">
+                {{ key | translate }}: {{ oldValues[key] }}
+            </div>
+        </div>
+        <div class="column">
+            <h2>{{ "new_values" | translate }}</h2>
+            <div *ngFor="let key of newValuesKeys">
+              
+                {{ key | translate }}: {{ newValues[key] }}
+            </div>
+        </div>
+
+    </div>
+    <div class="created" *ngIf="data.audit.event=='created'">
+        <h2>{{ "new_values" | translate }}</h2>
+       
+        <div *ngFor="let key of newValuesKeys">
+            {{ key  | translate}}: {{ newValues[key] }}
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="btns">
+    <button mat-button mat-dialog-close>
+        Close
+    </button>
+</mat-dialog-actions>

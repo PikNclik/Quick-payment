@@ -49,7 +49,10 @@ class _CustomizedOutlinedButtonState extends State<CustomizedOutlinedButton> {
               Future.delayed(const Duration(milliseconds: 300), widget.callback);
             },
             child: Container(
-              height: 35,
+              constraints: const BoxConstraints(
+                  minHeight: 35,
+
+              ),
               width: widget.width,
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
               decoration: BoxDecoration(

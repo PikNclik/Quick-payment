@@ -12,7 +12,7 @@ class SmsService
     {
         $phone = '963'.$phone;
         $message = $this->toUnicode($message);
-        $url = 'https://services.mtnsyr.com:7443/General/MTNSERVICES/ConcatenatedSender.aspx?User=derdd298&Pass=dredff121918&From=PickNClick&Gsm='.$phone.'&Msg='.$message.'&Lang='.$lang;
+        $url = 'https://services.mtnsyr.com:7443/General/MTNSERVICES/ConcatenatedSender.aspx?User=derdd298&Pass=dredff121918&From=Q-PAY&Gsm='.$phone.'&Msg='.$message.'&Lang='.$lang;
          Http::get($url);
     }
 

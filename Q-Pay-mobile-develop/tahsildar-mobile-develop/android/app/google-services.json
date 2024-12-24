@@ -7,6 +7,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:128345247806:android:ebb39431306b411a48816f",
+        "android_client_info": {
+          "package_name": "com.piknclk.qpay"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "128345247806-73r761iidhc2h88kfn012f81pimahdq3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnfqJgTcZ09KWkqhlZSYDTkWh4xCMHE_0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "128345247806-73r761iidhc2h88kfn012f81pimahdq3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "128345247806-rj6nv5stghojdsvjhqd3mcamdt1uluk7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tradinos.tahsaldar"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:128345247806:android:53cf0de0abaca83048816f",
         "android_client_info": {
           "package_name": "com.tradinos.tahsaldar"
@@ -29,6 +65,13 @@
             {
               "client_id": "128345247806-73r761iidhc2h88kfn012f81pimahdq3.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "128345247806-rj6nv5stghojdsvjhqd3mcamdt1uluk7.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tradinos.tahsaldar"
+              }
             }
           ]
         }

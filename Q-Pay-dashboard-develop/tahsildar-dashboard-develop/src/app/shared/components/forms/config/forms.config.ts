@@ -104,6 +104,7 @@ export interface FormFieldData {
    * @param {any} value new input value after changed
    */
   onChange?: (formGroup: FormGroup, value: any) => void;
+  onDateSelect?: (formGroup: FormGroup, value: any) => void;
 
   /**
    * condition to show/hide the field

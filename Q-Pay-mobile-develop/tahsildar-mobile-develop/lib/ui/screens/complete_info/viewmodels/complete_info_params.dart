@@ -17,7 +17,7 @@ import '../../../../models/forms/formz_text.dart';
 
 class CompleteInfoParams {
   /// full name field
-  final fullName = const FormzText.pure("").liveData;
+  final fullName = const FormzText.pure().liveData;
 
   /// User bank
   final bankId = const FormzText.pure("").liveData;
@@ -33,6 +33,11 @@ class CompleteInfoParams {
 
   final bankAccountMatch = true.liveData;
 
+  final password = const FormzText.pure("").liveData;
+  final confirmPassword = const FormzText.pure("").liveData;
+  final passwordMatch = true.liveData;
+
+
   final addresses = <AutoCompleteItemModel>[].liveData;
 
   /// User address
@@ -47,6 +52,6 @@ class CompleteInfoParams {
         bankId.inputValue().isNotEmpty &&
         bankAccountNumber.inputValue().isNotEmpty &&
         bankAccountMatch.value &&
-        addressId.inputValue().isNotEmpty;
+        addressId.inputValue().isNotEmpty&&passwordMatch.value&&password.inputValue().isNotEmpty;
   }
 }

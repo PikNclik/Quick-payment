@@ -29,8 +29,10 @@ class _InitialScreenState extends State<InitialScreen> with InstanceState<Initia
 
   _handleNavigation() async {
     bool isLoggedIn = await AuthenticationController.loggedIn();
+    bool isCompleteProfile = await AuthenticationController.completeProfile();
     Future.delayed(const Duration(seconds: 1), () {
-      appRouter.replaceAll([isLoggedIn ? const Main() : const Login()]);
+
+      appRouter.replaceAll([isLoggedIn ?isCompleteProfile? const Main():const CompleteInfo() : const Login()]);
     });
   }
 

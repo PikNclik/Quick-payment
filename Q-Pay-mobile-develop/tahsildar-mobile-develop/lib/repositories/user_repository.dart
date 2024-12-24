@@ -19,10 +19,10 @@ class UserRepository extends BaseRepository {
   final _userRestClient = Lazy<UserRestClient>(() => UserRestClient(GetIt.I.get<Dio>()));
   UserRestClient get userRestClient => _userRestClient.value;
 
-  Future<BaseResponse<dynamic>> login(String number) {
+  Future<BaseResponse<bool>> login(String number,bool send) {
     final cancelToken = CancelToken();
     return getResponse(
-      () => userRestClient.login(phone: number, cancelToken: cancelToken).onError((error, _) => catchError<dynamic>(error)),
+      () => userRestClient.login(phone: number, send: send, cancelToken: cancelToken).onError((error, _) => catchError<bool>(error)),
       cancelToken: cancelToken,
     );
   }
@@ -34,8 +34,42 @@ class UserRepository extends BaseRepository {
       cancelToken: cancelToken,
     );
   }
-
-  Future<BaseResponse<User>> register(String fullName, String bankId, String accountNumber, String cityId) {
+  Future<BaseResponse<LoginResponse>> loginPassword(String number, String password) {
+    final cancelToken = CancelToken();
+    return getResponse(
+          () => userRestClient.loginPassword( phone:number, password:password, cancelToken: cancelToken).onError((error, _) => catchError<LoginResponse>(error)),
+      cancelToken: cancelToken,
+    );
+  }
+  Future<BaseResponse<LoginResponse>> changePassword({required String oldPassword,required String newPassword,required String confirmPassword}) {
+    final cancelToken = CancelToken();
+    return getResponse(
+          () => userRestClient.changePassword( oldPassword:oldPassword ,newPassword:newPassword ,confirmPassword: confirmPassword, cancelToken: cancelToken).onError((error, _) => catchError<LoginResponse>(error)),
+      cancelToken: cancelToken,
+    );
+  }
+  Future<BaseResponse<dynamic>> resetPasswordRequest({required String phone}) {
+    final cancelToken = CancelToken();
+    return getResponse(
+          () => userRestClient.resetPasswordRequest( phone: phone, cancelToken: cancelToken).onError((error, _) => catchError<dynamic>(error)),
+      cancelToken: cancelToken,
+    );
+  }
+  Future<BaseResponse<dynamic>> resetPasswordVerification({required String phone,required String code,}) {
+    final cancelToken = CancelToken();
+    return getResponse(
+          () => userRestClient.resetPasswordVerification( phone: phone, code: code,cancelToken: cancelToken).onError((error, _) => catchError<dynamic>(error)),
+      cancelToken: cancelToken,
+    );
+  }
+  Future<BaseResponse<dynamic>> resetPassword({required String phone,required String code,required String newPassword,required String confirmPassword}) {
+    final cancelToken = CancelToken();
+    return getResponse(
+          () => userRestClient.resetPassword(confirmPassword:confirmPassword,newPassword:  newPassword, phone: phone, code: code,cancelToken: cancelToken).onError((error, _) => catchError<dynamic>(error)),
+      cancelToken: cancelToken,
+    );
+  }
+  Future<BaseResponse<User>> register(String fullName, String bankId, String accountNumber, String cityId,String password) {
     /// Complete info after login
     final cancelToken = CancelToken();
     return getResponse(
@@ -45,6 +79,7 @@ class UserRepository extends BaseRepository {
             bankId: bankId,
             accountNumber: accountNumber,
             cityId: cityId,
+            password: password,
             cancelToken: cancelToken,
           )
           .onError((error, _) => catchError<User>(error)),
@@ -67,6 +102,14 @@ class UserRepository extends BaseRepository {
     final cancelToken = CancelToken();
     return getResponse(
       () => userRestClient.logOut(deviceId: deviceId, cancelToken: cancelToken).onError((error, _) => catchError<dynamic>(error)),
+      cancelToken: cancelToken,
+    );
+  }
+
+  Future<BaseResponse<dynamic>> deleteUser(String deviceId) {
+    final cancelToken = CancelToken();
+    return getResponse(
+          () => userRestClient.deleteUser(id: 111, cancelToken: cancelToken).onError((error, _) => catchError<dynamic>(error)),
       cancelToken: cancelToken,
     );
   }

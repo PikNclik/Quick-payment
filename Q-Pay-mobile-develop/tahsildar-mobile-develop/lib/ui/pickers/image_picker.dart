@@ -22,11 +22,9 @@ Future<List<File>?> openCamera() async {
 }
 
 Future<XFile?> openImagePicker() async {
-  bool isGranted = await storagePermission();
-  if (isGranted) {
+
     final picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery, imageQuality: imageQuality);
     return image;
-  }
-  return null;
+
 }

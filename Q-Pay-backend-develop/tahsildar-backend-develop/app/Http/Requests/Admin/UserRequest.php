@@ -39,15 +39,30 @@ class UserRequest extends MainRequest
             case 'GET':
             case 'DELETE':
                 return [];
-            case 'POST':
+            case 'POST': return [
+                'full_name' => ['required', 'string', 'min:5', 'max:255'],
+                'active' => ['boolean'],
+                'phone' => ['required','string','max:20'],
+                'bank_id' => ['nullable', Rule::exists('banks', 'id')],
+                'city_id' => ['nullable', Rule::exists('cities', 'id')],
+                'webhook_url' => ['nullable', 'string','max:255'],
+                'bank_account_number' => ['required', 'string', 'max:255']
+
+            ];
             case 'PUT':
                 return [
-                    'full_name' => ['required', 'string', 'min:5', 'max:255'],
+                    'full_name' => [ 'string', 'min:5', 'max:255'],
                     'active' => ['boolean'],
-                    'phone' => ['required','string','max:20'],
+                    'phone' => ['string','max:20'],
                     'bank_id' => ['nullable', Rule::exists('banks', 'id')],
                     'city_id' => ['nullable', Rule::exists('cities', 'id')],
-                    'bank_account_number' => ['required', 'string', 'max:255']
+                    'webhook_url' => ['nullable', 'string','max:255'],
+                    'profession_id'=>['nullable'],
+                    'business_name' => [
+                        'nullable',
+                        'string',
+                        'max:255'
+                    ],
                 ];
         }
         return [];

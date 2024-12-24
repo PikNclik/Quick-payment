@@ -18,9 +18,11 @@ class TransactionDate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        SvgPicture.asset('calender'.svgAsset, color: DesignColors.primaryColor),
-        const SizedBox(width: 4),
         _buildDate(transactionDateType),
+
+        const SizedBox(width: 4),
+        SvgPicture.asset('calender'.svgAsset, color: DesignColors.primaryColor),
+
         // transaction.status == 3
         //     ? transaction.paidAt
         //     : transaction.scheduledDate,

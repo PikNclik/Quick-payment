@@ -13,11 +13,11 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MY_DATE_FORMAT } from '../../forms/generic-form-builder/generic-form-builder.component';
 import * as moment from 'moment';
 import { GenericNgSelectComponent } from '../../forms/generic-ng-select/generic-ng-select.component';
 import { CmsService } from '../services/cms.service';
 import { finalize, Observable } from 'rxjs';
+import { MY_DATE_FORMAT } from 'src/app/core/dashboard/configuration/date-format';
 
 @Component({
   selector: 'app-filters',

@@ -7,14 +7,14 @@ import 'package:formz/formz.dart';
 enum MobileValidationError { invalid, empty }
 
 class FormzMobile extends FormzInput<String, MobileValidationError> {
-  const FormzMobile.pure() : super.pure('');
+  const FormzMobile.pure([String value = '']) : super.pure(value);
   const FormzMobile.dirty([String value = '']) : super.dirty(value);
 
   bool isValidSyrianMobileNumber(String number) {
-    RegExp regex = RegExp(r"^(93|94|95|96|97|98|99)[0-9]{7}$");
-    return regex.hasMatch(number);
+    var p0 = number;
+    return !(p0 == null || !(p0.startsWith("5") || p0.startsWith("9"))  ||
+        p0.length != 9);
   }
-
   @override
   MobileValidationError? validator(String value) {
     if (value.isEmpty) {
@@ -34,7 +34,7 @@ extension Explanation on MobileValidationError {
   String? get message {
     switch (this) {
       case MobileValidationError.invalid:
-        return 'mobile_number_invalid'.tr();
+        return 'phone_invalid'.tr();
       default:
         return null;
     }

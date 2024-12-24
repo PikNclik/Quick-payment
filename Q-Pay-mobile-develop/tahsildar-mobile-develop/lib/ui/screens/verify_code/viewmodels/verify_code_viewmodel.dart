@@ -23,6 +23,12 @@ class VerifyCodeViewModel extends BaseViewModel {
   final _userRepository = Lazy(() => UserRepository());
   UserRepository get userRepository => _userRepository.value;
 
+  @override
+  onInit(){
+    resendCode(resend: false);
+  }
+
+
   onPinChanged(String pinCode) {
     if (pinCode.length == 4) {
       params.pinCode.postValue(pinCode);
@@ -35,13 +41,15 @@ class VerifyCodeViewModel extends BaseViewModel {
     }
   }
 
-  resendCode() {
+  resendCode({bool resend=true}) {
     callHttpRequest(
-      () => userRepository.login(params.mobile),
+      () => userRepository.login(params.mobile,true),
       loading: baseParams.loading,
       onSuccess: (success) {
         if (success) {
-          baseParams.uiMessage.postValue(UiMessage(message: "code_resent".tr(), state: UiMessageState.success));
+          if(resend) {
+            baseParams.uiMessage.postValue(UiMessage(message: "code_resent".tr(), state: UiMessageState.success));
+          }
           params.resendCodeEnabled.postValue(false);
           AppStorage.setResendCodeDatetime(DateTime.now());
         }

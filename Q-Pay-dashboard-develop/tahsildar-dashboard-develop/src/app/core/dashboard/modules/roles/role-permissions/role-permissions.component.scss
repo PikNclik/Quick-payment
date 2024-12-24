@@ -1,0 +1,14 @@
+.spinner-container {
+    display: flex;
+    justify-content: center;  /* Centers horizontally */
+    align-items: center;      /* Centers vertically */
+  }
+  .checkbox-container {
+    display: grid;
+    width: 90%;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .checkbox-column {
+    padding: 10px;
+  }

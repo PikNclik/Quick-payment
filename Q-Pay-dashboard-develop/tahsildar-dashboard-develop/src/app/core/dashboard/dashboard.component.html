@@ -8,7 +8,12 @@
       <!-- Sidenav -->
       <!------------->
       <div class="sidenav-wrapper" fxLayout="column" fxLayoutAlign="center center">
-        <img src='assets/images/login.png' />
+        <img src='assets/images/login.jpg' />
+        <p>{{ role | titlecase }}</p>
+        <div>
+          <img src="../../../assets/images/logo.svg" style="height: 50px"/>
+          <p>Powered By P&C</p>
+        </div>
         <mat-nav-list class="sidenav-list">
           <ng-container *ngFor="let item of navItems">
             <a mat-list-item [routerLink]="item.route" routerLinkActive="active-list-item">

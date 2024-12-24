@@ -11,8 +11,8 @@ import '../ui/resources/colors/colors.dart';
 
 final notificationService = NotificationService(
   onSelectNotification: onSelectNotification,
-  androidChannelId: "com.tradinos.tahsaldar",
-  androidChannelName: "tahsaldar_app",
+  androidChannelId: "com.piknclk.qpay",
+  androidChannelName: "Qpay app",
   color: DesignColors.primaryColor,
   notificationIcon: "ic_notification",
 );

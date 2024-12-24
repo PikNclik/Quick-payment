@@ -6,6 +6,7 @@
 ///
 /// store and manage your liveData in [ProfileParams].
 import 'package:lazy_evaluation/lazy_evaluation.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:tahsaldar/controllers/auth_controller.dart';
 import 'package:tahsaldar/extensions/data_extension.dart';
 import 'package:tahsaldar/repositories/payment_repository.dart';
@@ -28,6 +29,7 @@ class ProfileViewModel extends BaseViewModel {
   @override
   onInit() {
     super.onInit();
+    getVersionNumber();
     getUser();
     getTotalPaid();
   }
@@ -40,8 +42,14 @@ class ProfileViewModel extends BaseViewModel {
     });
   }
 
+  Future<void> getVersionNumber() async {
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    params.version.postValue(packageInfo.version);
+  }
+
+
   getTotalPaid() {
-    callHttpRequest(() => paymentRepository.getTotal(month: params.month.value.number, year: params.year.value.toInteger()), loading: baseParams.loading, callback: (response) {
+    callHttpRequest(() => paymentRepository.getTotal(month: params.month.value.number,type: "payment", year: params.year.value.toInteger()), loading: baseParams.loading, callback: (response) {
       if (response != null) {
         params.totalPaid.postValue(response);
       }
@@ -49,8 +57,17 @@ class ProfileViewModel extends BaseViewModel {
   }
 
   logout() async {
-    String deviceId = '123'; //TODO
+    String deviceId = user.id.toString();
     callHttpRequest(() => userRepository.logout(deviceId), loading: baseParams.loading, callback: (response) async {
+      await AuthenticationController.logOut();
+      appRouter.replaceAll([const Login()]);
+    });
+  }
+
+
+  deleteUser() async {
+    String deviceId = user.id.toString();
+    callHttpRequest(() => userRepository.deleteUser(deviceId), loading: baseParams.loading, callback: (response) async {
       await AuthenticationController.logOut();
       appRouter.replaceAll([const Login()]);
     });

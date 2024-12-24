@@ -8,7 +8,8 @@ import 'package:tahsaldar/ui/resources/text_styles/text_styles.dart';
 void showSnackBar({
   required BuildContext context,
   required String message,
-  Function()? callback,
+  Function? callback,
+  Duration? duration,
   TextStyle? textStyle,
   String? action,
   Color? backgroundColor,
@@ -16,7 +17,7 @@ void showSnackBar({
   ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
     ..showSnackBar(
-      SnackBar(
+      SnackBar(duration: duration??const Duration(milliseconds: 4000),
         behavior: SnackBarBehavior.floating,
         content: Text(message,
             style: body3.copyWith(

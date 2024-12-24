@@ -26,7 +26,7 @@ class LoginRequest extends MainRequest
         if ($this->method() == 'POST')
             return [
                 'username' => 'required|string|max:255',
-                'password' => 'required|string|max:255'
+                'password' => 'required|min:8|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
             ];
 
         return [];

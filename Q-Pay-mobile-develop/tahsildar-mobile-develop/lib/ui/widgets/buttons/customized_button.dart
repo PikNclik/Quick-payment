@@ -49,7 +49,11 @@ class _CustomizedButtonState extends State<CustomizedButton> {
               Future.delayed(const Duration(milliseconds: 300), widget.callback);
             },
             child: Container(
-              height: 40,
+              constraints: BoxConstraints(
+                minHeight: 40,
+
+              ),
+              // height: 40,
               width: widget.width,
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
               decoration: BoxDecoration(
@@ -76,6 +80,7 @@ class _CustomizedButtonState extends State<CustomizedButton> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       widget.icon ?? const SizedBox(),
+
                       Text(
                         widget.text.tr(),
                         style: const TextStyle(

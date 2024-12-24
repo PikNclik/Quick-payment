@@ -43,6 +43,7 @@ export class BanksListComponent {
     this.cmsService.onDataFetched.subscribe(banks => {
       banks.forEach(bank => {
         bank.created_at = this.datePipe.transform(bank.created_at, environment.datetimeFormat) || "";
+        bank.activeString = bank.active ? 'Active' : 'Not Active';
       });
     });
   }

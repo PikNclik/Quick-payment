@@ -5,6 +5,7 @@
 /// state management for UI
 ///
 /// store and manage your liveData in [UpdateProfileParams].
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutterx_live_data/flutterx_live_data.dart';
 import 'package:lazy_evaluation/lazy_evaluation.dart';
 import 'package:tahsaldar/extensions/formz_extension.dart';
@@ -37,15 +38,26 @@ class UpdateProfileViewModel extends BaseViewModel {
     super.onInit();
     getBanks();
     getAddresses();
+    params.submit.postValue(params.isFormFilled());
+
+
   }
+
 
   mapListOfBanksToAutoCompleteModel(List<Bank> banks) {
     List<AutoCompleteItemModel> temp = [];
-    if (banks.isNotEmpty) {
-      for (var element in banks) {
-        temp.add(AutoCompleteItemModel(id: element.id, value: element.name));
+    if (user.isFake()){
+      temp.add(AutoCompleteItemModel(id: 21, value: "ADIB"));
+      temp.add(AutoCompleteItemModel(id: 16, value: "MASHREQ NEO"));
+    }
+   else {
+      if (banks.isNotEmpty) {
+        for (var element in banks) {
+          temp.add(AutoCompleteItemModel(id: element.id, value: element.name));
+        }
       }
     }
+
     params.banks.postValue(temp);
   }
 
@@ -57,9 +69,15 @@ class UpdateProfileViewModel extends BaseViewModel {
 
   mapListOfAddressesToAutoCompleteModel(List<City> address) {
     List<AutoCompleteItemModel> temp = [];
-    if (address.isNotEmpty) {
-      for (var element in address) {
-        temp.add(AutoCompleteItemModel(id: element.id, value: element.name));
+    if (user.isFake()){
+      temp.add(AutoCompleteItemModel(id: 1, value: "Dubai".tr()));
+      temp.add(AutoCompleteItemModel(id: 2, value: "Abu Dhabi".tr()));
+    }
+    else {
+      if (address.isNotEmpty) {
+        for (var element in address) {
+          temp.add(AutoCompleteItemModel(id: element.id, value: element.name));
+        }
       }
     }
     params.addresses.postValue(temp);
@@ -85,6 +103,7 @@ class UpdateProfileViewModel extends BaseViewModel {
     final newValue = FormzText.dirty(value);
     attr.postValue(newValue);
     if (params.bankAccountNumber.inputValue() != params.confirmBankAccountNumber.inputValue()) {
+      params.bankAccountMatch.postValue(true);
       params.bankAccountMatch.postValue(false);
     } else {
       params.bankAccountMatch.postValue(true);

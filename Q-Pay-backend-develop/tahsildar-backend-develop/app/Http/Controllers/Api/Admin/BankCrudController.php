@@ -21,4 +21,9 @@ class BankCrudController extends BaseCrudController
     {
         parent::__construct($service);
     }
+
+    public function show(int $id)
+    {
+        return $this->handleSharedMessage($this->service->viewAdmin($id));
+    }
 }

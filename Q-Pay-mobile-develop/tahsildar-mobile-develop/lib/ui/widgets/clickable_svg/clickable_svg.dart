@@ -8,14 +8,20 @@ class ClickableSvg extends StatelessWidget {
   final String svg;
   final bool isFilled;
   final Color color;
+  final IconData? icon;
   final Function() callback;
-  const ClickableSvg({required this.svg, required this.callback, this.isFilled = false, this.color = DesignColors.primaryColor, Key? key}) : super(key: key);
+  const ClickableSvg({required this.svg, required this.callback, this.isFilled = false,this.icon, this.color = DesignColors.primaryColor, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AnimatedGesture(
       callback: callback,
-      child: SvgPicture.asset(
+      child:icon!=null?
+      Icon(
+       icon,
+        color: color,
+      )
+          : SvgPicture.asset(
         isFilled ? svg.filledSvgAsset : svg.svgAsset,
         color: color,
       ),

@@ -24,7 +24,8 @@ class LoginRequest extends MainRequest
     public function rules()
     {
         return [
-            'phone' => ['required','string']
+            'phone' => ['required','string'],
+            'send' => ['required','boolean']
         ];
     }
 }

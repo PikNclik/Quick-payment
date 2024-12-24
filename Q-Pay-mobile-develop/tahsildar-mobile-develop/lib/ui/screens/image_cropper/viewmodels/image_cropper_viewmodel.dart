@@ -8,9 +8,11 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lazy_evaluation/lazy_evaluation.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:tahsaldar/repositories/media_repository.dart';
 import 'package:tahsaldar/ui/screens/image_cropper/lib/cropperx.dart';
 import 'package:tahsaldar/viewmodels/base_viewmodel.dart';
@@ -33,12 +35,33 @@ class ImageCropperViewModel extends BaseViewModel {
   final _params = Lazy(() => ImageCropperParams());
   ImageCropperParams get params => _params.value;
 
+
+
+
   pickImage() async {
+    if (!await Permission.storage.isGranted) {
+      if (await Permission.storage.isPermanentlyDenied){
+        return;
+      } else {
+        var response = await Permission.storage.request();
+        if (response == PermissionStatus.permanentlyDenied) {
+          baseParams.uiMessage.postValue(UiMessage(message: "storage_permission_forever".tr()));
+          return;
+        }
+        if (!response.isGranted) {
+          baseParams.uiMessage.postValue(UiMessage(message: "storage_permission".tr()));
+          return;
+        }
+      }
+
+    }
     final image = await openImagePicker();
     if (image != null) {
       final imageBytes = await image.readAsBytes();
       params.rawOriginalImage.postValue(imageBytes);
     }
+
+
   }
 
   adjustingImage() async {

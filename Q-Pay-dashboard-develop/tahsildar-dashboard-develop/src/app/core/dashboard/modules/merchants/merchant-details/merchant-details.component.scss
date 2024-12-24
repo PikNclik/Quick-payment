@@ -1,0 +1,14 @@
+.details-container {
+  display: grid;
+  width: 90%;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.details-column {
+  padding: 10px;
+}
+
+.btns {
+  padding: 20px;
+}

@@ -1,4 +1,4 @@
-import 'package:easy_localization/easy_localization.dart';
+import 'package:easy_localization/easy_localization.dart'as d ;
 import 'package:flutter/material.dart';
 
 import '../../../resources/text_styles/text_styles.dart';
@@ -8,20 +8,34 @@ class AboutUs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'about_tahsaldar'.tr(),
-          style: body3,
-        ),
-        const SizedBox(height: 4),
-        Text(
-          'about_body'.tr(),
-          style: body4,
-        ),
-      ],
+    return InkWell(
+      child: Text(
+        'about_Q_pay'.tr(),
+        style: body3,
+      ),
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (context) => Dialog(
+                alignment: Alignment.center,
+                elevation: 5,
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(children: [
+                      const SizedBox(height: 20),
+                      Directionality(
+                        textDirection: TextDirection.rtl,
+                        child: Text("about_Q-pay".tr(),style: body1,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ]),
+                  ),
+                ),
+              ));
+        }
     );
   }
 }

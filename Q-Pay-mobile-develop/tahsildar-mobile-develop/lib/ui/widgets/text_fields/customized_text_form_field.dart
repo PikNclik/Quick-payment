@@ -120,6 +120,15 @@ class CustomizedTextFormFieldState extends State<CustomizedTextFormField> {
             children: [
               TextFormField(
                 key: formKey,
+                onTap: (){
+                  if(widget.controller?.selection == TextSelection.fromPosition(
+                      TextPosition(offset: 0))){
+                    setState(() {
+                      widget.controller?.selection = TextSelection.fromPosition(
+                          TextPosition(offset: widget.controller?.text.length ?? 0));
+                    });
+                  }
+                },
                 focusNode: focusNode,
                 controller: widget.controller,
                 textAlign: widget.textAlign,
@@ -158,10 +167,11 @@ class CustomizedTextFormFieldState extends State<CustomizedTextFormField> {
                             _hidePassword = !_hidePassword;
                             setState(() {});
                           },
-                          child: SvgPicture.asset(
-                            "password_icon".svgAsset,
-                            color: _hidePassword ? primaryColor : DesignColors.grey,
-                          ),
+                    child: const SizedBox(),
+                          // child: SvgPicture.asset(
+                          //   "password_icon".svgAsset,
+                          //   color: _hidePassword ? primaryColor : DesignColors.grey,
+                          // ),
                         )
                       : widget.suffix,
                   suffixIcon: widget.suffixIcon,

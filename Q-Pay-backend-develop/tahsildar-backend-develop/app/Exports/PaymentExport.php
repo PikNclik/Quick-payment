@@ -3,12 +3,14 @@
 namespace App\Exports;
 
 use App\Definitions\PaymentStatus;
+use App\Models\TransactionToDo;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
 use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -16,10 +18,14 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Cell\DataValidation;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use function PHPUnit\Framework\isEmpty;
+use function PHPUnit\Framework\isNull;
 
-class PaymentExport implements
+class PaymentExport extends \PhpOffice\PhpSpreadsheet\Cell\StringValueBinder  implements
     FromCollection,
+    WithCustomValueBinder,
     WithHeadings,
     WithMapping,
     WithColumnWidths,
@@ -29,10 +35,13 @@ class PaymentExport implements
     WithEvents
 {
     protected Collection $collection;
+    protected array $unwantedColumns;
 
-    public function __construct(Collection $collection)
+
+    public function __construct(Collection $collection,$unwantedColumns)
     {
         $this->collection = $collection;
+        $this->unwantedColumns = $unwantedColumns ?? [];
     }
 
     /**
@@ -40,7 +49,15 @@ class PaymentExport implements
      */
     public function collection(): Collection
     {
-        return $this->collection;
+        $this->collection = $this->collection->whereNull('parent_payment_id');
+        $flattened = [];
+        foreach ($this->collection as $payment){
+            $flattened[] = $payment;
+            foreach ($payment->children as $child){
+                $flattened[] = $child;
+            }
+        }
+        return new Collection( $flattened);
     }
 
     /**
@@ -48,22 +65,27 @@ class PaymentExport implements
      */
     public function headings(): array
     {
-        return [
-            'Invoice Number',
-            'Merchant',
-            'User Mobile num',
-            'Settlement date',
-            'Card number',
-            'Status',
-            'Requested payments',
-            'Transaction Date',
-            'Transaction Time',
-            'Date From',
-            'Date To',
-            'Merchant Mobile num',
-            'Payment Details',
-            'Bank Number',
+        $headings = [
+            __('payment_export.invoice_number'),
+            __('payment_export.customer_name'),
+            __('payment_export.customer_mobile'),
+            __('payment_export.requested_payment_value'),
+            __('payment_export.actual_payment_value'),
+            __('payment_export.payment_request_date'),
+            __('payment_export.paid_datetime'),
+            __('payment_export.rrn'),
+            __('payment_export.settlement_date'),
+            __('payment_export.status'),
+            __('payment_export.payment_type'),
+            __('payment_export.create_datetime'),
+            __('payment_export.payment_details'),
+            __('payment_export.receiving_bank_name'),
+            __('payment_export.bank_number'),
         ];
+        foreach ($this->unwantedColumns as $column ){
+            unset($headings[$column]);
+        }
+        return  $headings;
     }
 
     /**
@@ -73,22 +95,31 @@ class PaymentExport implements
      */
     public function map($row): array
     {
-       return [
+        $transactionToDo = TransactionToDo::where("payment_id",$row->id)->first();
+        $data = [
            $row->id,
-           $row->user->full_name,
-           $row->payer_mobile_number,
+           $row->customer->name,
+           $row->customer->phone,
+            number_format($row->amount),
+            number_format($row->actual_payment ??  $row->amount,),
+           Carbon::createFromFormat('Y-m-d H:i:s',$row->scheduled_date ?? $row->created_at)
+               ->setTimezone('Asia/Riyadh')->format('d-M-y'),
+           !$transactionToDo ? '' : Carbon::parseFromLocale($transactionToDo->created_at)
+               ->setTimezone('Asia/Riyadh')->format('d-M-y g:i:s A'),
+           $row->rrn,
            '-',
-           $row->hash_card,
-           PaymentStatus::STATUSES_NAME[$row->status],
-           $row->amount,
-           Carbon::createFromFormat('Y-m-d H:i:s',$row->created_at)->setTimezone('Asia/Damascus')->format('Y-m-d'),
-           Carbon::createFromFormat('Y-m-d H:i:s',$row->created_at)->setTimezone('Asia/Damascus')->format('g:i A'),
-           $row->scheduled_date,
-           $row->expiry_date,
-           $row->user->phone,
+           __('payment_export.'.PaymentStatus::STATUSES_NAME[$row->status]),
+           __('payment_export.'.$row->payment_type),
+           Carbon::createFromFormat('Y-m-d H:i:s',$row->created_at)
+               ->setTimezone('Asia/Riyadh')->format('d-M-y g:i:s A'),
            $row->details,
+           $row->user->bank->name,
            $row->user->bank_account_number,
        ];
+        foreach ($this->unwantedColumns as $column ){
+            unset($data[$column]);
+        }
+        return $data;
     }
 
     public function columnWidths(): array
@@ -102,11 +133,20 @@ class PaymentExport implements
     public function columnFormats(): array
     {
         return [
+//            "C" => NumberFormat::FORMAT_TEXT,
+//            "D" => NumberFormat::FORMAT_TEXT,
+//            "E" => NumberFormat::FORMAT_TEXT,
+//            "H" => NumberFormat::FORMAT_TEXT,
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
+        $sheet->getStyle($sheet->calculateWorksheetDimension()) // Apply to the entire sheet
+        ->getAlignment()->setHorizontal('center');
+
+        $sheet->getStyle($sheet->calculateWorksheetDimension()) // Apply to the entire sheet
+        ->getAlignment()->setVertical('center');
         return [
             1 => ['font' => ['bold' => true]],
         ];
@@ -118,16 +158,22 @@ class PaymentExport implements
         return [
             // handle by a closure.
             AfterSheet::class => function(AfterSheet $event) {
+                $event->sheet->getDelegate()->setRightToLeft(app()->getLocale() === 'ar');
 
                 // get layout counts (add 1 to rows for heading row)
                 $row_count = $this->collection->count() + 1;
                 $column_count = 13;
 
                 // set dropdown column
-                $drop_column = 'F';
+                $drop_column = $this->getColumnIndex(__('payment_export.status'),$event->sheet);
 
                 // set dropdown options
                 $options = PaymentStatus::STATUSES_NAME;
+                $translatedOptions = [];
+                foreach ( $options as $option){
+                    if ($option != 'Refunded')
+                    array_push($translatedOptions, __('payment_export.'.$option),);
+                }
 
                 // set dropdown list for first data row
                 $validation = $event->sheet->getCell("{$drop_column}2")->getDataValidation();
@@ -141,7 +187,7 @@ class PaymentExport implements
                 $validation->setError('Invalid Status');
                 $validation->setPromptTitle('Select Status');
                 $validation->setPrompt('Please pick a status from the status list.');
-                $validation->setFormula1(sprintf('"%s"',implode(',',$options)));
+                $validation->setFormula1(sprintf('"%s"',implode(',',$translatedOptions)));
 
                 // clone validation to remaining rows
                 for ($i = 3; $i <= $row_count; $i++) {
@@ -155,5 +201,25 @@ class PaymentExport implements
                 }
             },
         ];
+    }
+    function  getColumnIndex ($column,$sheet){
+        $headerRow = 1;
+        // Loop through columns in the header row
+        $highestColumn = $sheet->getHighestColumn(); // Get the highest column in the sheet
+        $highestColumnIndex = Coordinate::columnIndexFromString($highestColumn); // Convert it to index
+
+        for ($col = 1; $col <= $highestColumnIndex; $col++) {
+            // Convert column index to letter (A, B, C, ...)
+            $columnLetter = Coordinate::stringFromColumnIndex($col);
+
+            // Get the value of the cell in the header row
+            $cellValue = $sheet->getCell($columnLetter . $headerRow)->getValue();
+
+            // Check if it matches the desired header
+            if ($cellValue === $column) {
+                // This is the matching column
+                return $columnLetter;
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 import { FormNgSelectConfig } from "src/app/shared/components/forms/config/forms.config";
 import { Bank } from "./bank.model";
 import { City } from "./city.model";
+import {ProfessionModel} from "./profession.model";
 
 export class Merchant {
   id?: number;
@@ -15,6 +16,14 @@ export class Merchant {
   bank?: Bank;
   city?: City;
   city_id?: string;
+  webhook_url?: string;
+  business_name?: string;
+  completed?: string;
+  activated_at?: string;
+  profession? : ProfessionModel;
+  paid_amount? : number;
+  pending_amount? : number;
+  settled_amount? : number;
 }
 
 export function ngSelectMerchantConfig(config?: {
@@ -23,7 +32,7 @@ export function ngSelectMerchantConfig(config?: {
 }): FormNgSelectConfig<Merchant> {
   const multiple = config?.multiple ?? false;
   return {
-    endPoint: 'user',
+    endPoint: 'user_search',
     bindLabel: 'full_name',
     bindValue: 'id',
     multiple,

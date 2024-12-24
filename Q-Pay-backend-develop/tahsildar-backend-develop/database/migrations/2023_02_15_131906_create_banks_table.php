@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('banks', function (Blueprint $table) {
             $table->id();
+            $table->boolean('active')->default(false);
             $table->timestamps();
         });
     }

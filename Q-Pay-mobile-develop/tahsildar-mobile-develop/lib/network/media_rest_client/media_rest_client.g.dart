@@ -12,9 +12,7 @@ class _MediaRestClient implements MediaRestClient {
   _MediaRestClient(
     this._dio, {
     this.baseUrl,
-  }) {
-    baseUrl ??= 'https://tahsildar-back-dev.8byteslab.com/api';
-  }
+  });
 
   final Dio _dio;
 

@@ -19,11 +19,13 @@ abstract class PaymentRestClient {
   Future<BaseResponse<TotalPaid>> getTotal({
     @Query("month") String? month,
     @Query("year") String? year,
+    @Query("type") String? type,
     @CancelRequest() CancelToken? cancelToken,
   });
 
   @GET("/payment")
   Future<BaseResponse<ListResponse<Payment>>> getTransactions({
+    @Query("type") required String type,
     @Query("user_id") String? userId,
     @Query("page") required int page,
     @Query("per_page") int perPage = Env.perPage,

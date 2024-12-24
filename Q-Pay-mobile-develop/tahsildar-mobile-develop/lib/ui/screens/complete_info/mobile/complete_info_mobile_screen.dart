@@ -11,8 +11,8 @@ import "../viewmodels/complete_info_viewmodel.dart";
 import '../widgets/complete_info_form.dart';
 
 class CompleteInfoMobileScreen extends StatelessWidget {
-  const CompleteInfoMobileScreen({Key? key}) : super(key: key);
-
+   CompleteInfoMobileScreen({Key? key}) : super(key: key);
+final formKey=GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return InstanceBuilder<CompleteInfoViewModel>(
@@ -23,10 +23,16 @@ class CompleteInfoMobileScreen extends StatelessWidget {
               image: 'complete-info',
               title: 'complete_your_info'.tr(),
               animationType: AnimationType.fadeInUpRight,
-              widget: const CompleteInfoForm(),
+              widget: Form(key:formKey
+                  ,child: const CompleteInfoForm()),
               actionText: 'next',
               enabled: viewModel.params.submit,
-              action: viewModel.completeInfo,
+              action:() {
+                if(formKey.currentState!.validate()){
+                  viewModel.completeInfo();
+
+                }
+              },
             );
           },
         );

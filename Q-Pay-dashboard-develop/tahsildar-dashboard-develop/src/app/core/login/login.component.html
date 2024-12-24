@@ -1,6 +1,6 @@
 <div class="login-container" fxLayout="row">
   <div class="login-image" fxLayoutAlign="center center" fxFlex fxHide.lt-md>
-    <img src="./assets/images/login.png">
+    <img src="./assets/images/login.jpg">
   </div>
   <div class="login-form-wrapper" fxLayoutAlign="center center" fxFlex>
     <mat-card fxFlex="75">
@@ -9,7 +9,7 @@
 
       <!-- login form -->
       <form fxLayout="column" fxLayoutGap="2rem" fxLayoutAlign="center center" [formGroup]="formGroup">
-        <h1>Tahsildar</h1>
+        <h1>Q-Pay</h1>
 
         <!-- username -->
         <mat-form-field>
@@ -19,9 +19,23 @@
         </mat-form-field>
 
         <!-- password -->
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <mat-label>{{ "password" | translate }}</mat-label>
-          <input type="password" formControlName="password" matInput>
+          <input
+            [type]="hide ? 'password' : 'text'"
+            autocomplete="off"
+            formControlName="password"
+            matInput
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="'toggle password visibility'"
+            [attr.aria-pressed]="!hide"
+          >
+            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
           <mat-error>{{ "password" | translate }} {{ "is_required" | translate }}</mat-error>
         </mat-form-field>
 

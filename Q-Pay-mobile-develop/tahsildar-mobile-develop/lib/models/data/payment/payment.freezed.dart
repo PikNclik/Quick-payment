@@ -23,7 +23,9 @@ mixin _$Payment {
   int? get id => throw _privateConstructorUsedError;
   String? get payerName => throw _privateConstructorUsedError;
   String? get payerMobileNumber => throw _privateConstructorUsedError;
-  int? get amount => throw _privateConstructorUsedError;
+  Customer? get customer => throw _privateConstructorUsedError;
+  num? get amount => throw _privateConstructorUsedError;
+  num? get feesValue => throw _privateConstructorUsedError;
   String? get details => throw _privateConstructorUsedError;
   int? get status => throw _privateConstructorUsedError;
   DateTime? get expiryDate => throw _privateConstructorUsedError;
@@ -48,7 +50,9 @@ abstract class $PaymentCopyWith<$Res> {
       {int? id,
       String? payerName,
       String? payerMobileNumber,
-      int? amount,
+      Customer? customer,
+      num? amount,
+      num? feesValue,
       String? details,
       int? status,
       DateTime? expiryDate,
@@ -58,6 +62,8 @@ abstract class $PaymentCopyWith<$Res> {
       String? uuid,
       DateTime? createdAt,
       DateTime? updatedAt});
+
+  $CustomerCopyWith<$Res>? get customer;
 }
 
 /// @nodoc
@@ -76,7 +82,9 @@ class _$PaymentCopyWithImpl<$Res, $Val extends Payment>
     Object? id = freezed,
     Object? payerName = freezed,
     Object? payerMobileNumber = freezed,
+    Object? customer = freezed,
     Object? amount = freezed,
+    Object? feesValue = freezed,
     Object? details = freezed,
     Object? status = freezed,
     Object? expiryDate = freezed,
@@ -100,10 +108,18 @@ class _$PaymentCopyWithImpl<$Res, $Val extends Payment>
           ? _value.payerMobileNumber
           : payerMobileNumber // ignore: cast_nullable_to_non_nullable
               as String?,
+      customer: freezed == customer
+          ? _value.customer
+          : customer // ignore: cast_nullable_to_non_nullable
+              as Customer?,
       amount: freezed == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
+      feesValue: freezed == feesValue
+          ? _value.feesValue
+          : feesValue // ignore: cast_nullable_to_non_nullable
+              as num?,
       details: freezed == details
           ? _value.details
           : details // ignore: cast_nullable_to_non_nullable
@@ -142,6 +158,18 @@ class _$PaymentCopyWithImpl<$Res, $Val extends Payment>
               as DateTime?,
     ) as $Val);
   }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $CustomerCopyWith<$Res>? get customer {
+    if (_value.customer == null) {
+      return null;
+    }
+
+    return $CustomerCopyWith<$Res>(_value.customer!, (value) {
+      return _then(_value.copyWith(customer: value) as $Val);
+    });
+  }
 }
 
 /// @nodoc
@@ -155,7 +183,9 @@ abstract class _$$_PaymentCopyWith<$Res> implements $PaymentCopyWith<$Res> {
       {int? id,
       String? payerName,
       String? payerMobileNumber,
-      int? amount,
+      Customer? customer,
+      num? amount,
+      num? feesValue,
       String? details,
       int? status,
       DateTime? expiryDate,
@@ -165,6 +195,9 @@ abstract class _$$_PaymentCopyWith<$Res> implements $PaymentCopyWith<$Res> {
       String? uuid,
       DateTime? createdAt,
       DateTime? updatedAt});
+
+  @override
+  $CustomerCopyWith<$Res>? get customer;
 }
 
 /// @nodoc
@@ -180,7 +213,9 @@ class __$$_PaymentCopyWithImpl<$Res>
     Object? id = freezed,
     Object? payerName = freezed,
     Object? payerMobileNumber = freezed,
+    Object? customer = freezed,
     Object? amount = freezed,
+    Object? feesValue = freezed,
     Object? details = freezed,
     Object? status = freezed,
     Object? expiryDate = freezed,
@@ -204,10 +239,18 @@ class __$$_PaymentCopyWithImpl<$Res>
           ? _value.payerMobileNumber
           : payerMobileNumber // ignore: cast_nullable_to_non_nullable
               as String?,
+      customer: freezed == customer
+          ? _value.customer
+          : customer // ignore: cast_nullable_to_non_nullable
+              as Customer?,
       amount: freezed == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as num?,
+      feesValue: freezed == feesValue
+          ? _value.feesValue
+          : feesValue // ignore: cast_nullable_to_non_nullable
+              as num?,
       details: freezed == details
           ? _value.details
           : details // ignore: cast_nullable_to_non_nullable
@@ -255,7 +298,9 @@ class _$_Payment implements _Payment {
       {this.id,
       this.payerName,
       this.payerMobileNumber,
+      this.customer,
       this.amount,
+      this.feesValue,
       this.details,
       this.status,
       this.expiryDate,
@@ -276,7 +321,11 @@ class _$_Payment implements _Payment {
   @override
   final String? payerMobileNumber;
   @override
-  final int? amount;
+  final Customer? customer;
+  @override
+  final num? amount;
+  @override
+  final num? feesValue;
   @override
   final String? details;
   @override
@@ -298,7 +347,7 @@ class _$_Payment implements _Payment {
 
   @override
   String toString() {
-    return 'Payment(id: $id, payerName: $payerName, payerMobileNumber: $payerMobileNumber, amount: $amount, details: $details, status: $status, expiryDate: $expiryDate, scheduledDate: $scheduledDate, paidAt: $paidAt, userId: $userId, uuid: $uuid, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Payment(id: $id, payerName: $payerName, payerMobileNumber: $payerMobileNumber, customer: $customer, amount: $amount, feesValue: $feesValue, details: $details, status: $status, expiryDate: $expiryDate, scheduledDate: $scheduledDate, paidAt: $paidAt, userId: $userId, uuid: $uuid, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -311,7 +360,11 @@ class _$_Payment implements _Payment {
                 other.payerName == payerName) &&
             (identical(other.payerMobileNumber, payerMobileNumber) ||
                 other.payerMobileNumber == payerMobileNumber) &&
+            (identical(other.customer, customer) ||
+                other.customer == customer) &&
             (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.feesValue, feesValue) ||
+                other.feesValue == feesValue) &&
             (identical(other.details, details) || other.details == details) &&
             (identical(other.status, status) || other.status == status) &&
             (identical(other.expiryDate, expiryDate) ||
@@ -334,7 +387,9 @@ class _$_Payment implements _Payment {
       id,
       payerName,
       payerMobileNumber,
+      customer,
       amount,
+      feesValue,
       details,
       status,
       expiryDate,
@@ -364,7 +419,9 @@ abstract class _Payment implements Payment {
       {final int? id,
       final String? payerName,
       final String? payerMobileNumber,
-      final int? amount,
+      final Customer? customer,
+      final num? amount,
+      final num? feesValue,
       final String? details,
       final int? status,
       final DateTime? expiryDate,
@@ -384,7 +441,11 @@ abstract class _Payment implements Payment {
   @override
   String? get payerMobileNumber;
   @override
-  int? get amount;
+  Customer? get customer;
+  @override
+  num? get amount;
+  @override
+  num? get feesValue;
   @override
   String? get details;
   @override

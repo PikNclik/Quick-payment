@@ -14,7 +14,7 @@ class PaymentStatus
 
     const STATUSES = [self::PENDING,self::SCHEDULED,self::PAID,self::EXPIRED,self::CANCELLED,self::REFUNDED,self::SETTLED];
     const NOTIFICATION_STATUSES = [self::PENDING,self::PAID,self::EXPIRED,self::CANCELLED];
-    const APPROVED_PAID_STATUSES = [self::PENDING,self::CANCELLED];
+    const APPROVED_PAID_STATUSES = [self::PENDING];
     const CAN_CANCELED_STATUSES = [self::PENDING,self::EXPIRED,self::SCHEDULED];
 
 

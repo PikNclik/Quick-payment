@@ -16,15 +16,50 @@ abstract class UserRestClient {
   factory UserRestClient(Dio dio) = _UserRestClient;
 
   @POST("/login")
-  Future<BaseResponse<dynamic>> login({
+  Future<BaseResponse<bool>> login({
     @Field("phone") required String phone,
+    @Field("send")  required bool send,
     @CancelRequest() CancelToken? cancelToken,
   });
+
 
   @POST("/verify-code")
   Future<BaseResponse<LoginResponse>> verifyCode({
     @Field("phone") required String number,
     @Field("verification_code") required String code,
+    @CancelRequest() CancelToken? cancelToken,
+  });
+
+  @POST("/login-password")
+  Future<BaseResponse<LoginResponse>> loginPassword({
+    @Field("phone") required String phone,
+    @Field("password") required String password,
+    @CancelRequest() CancelToken? cancelToken,
+  });
+  @POST("/reset-password-request")
+  Future<BaseResponse<dynamic>> resetPasswordRequest({
+    @Field("phone") required String phone,
+    @CancelRequest() CancelToken? cancelToken,
+  });
+  @POST("/reset-password-verification")
+  Future<BaseResponse<dynamic>> resetPasswordVerification({
+    @Field("phone") required String phone,
+    @Field("code") required String code,
+    @CancelRequest() CancelToken? cancelToken,
+  });
+  @POST("/reset-password")
+  Future<BaseResponse<dynamic>> resetPassword({
+    @Field("phone") required String phone,
+    @Field("code") required String code,
+    @Field("new_password") required String newPassword,
+    @Field("confirm_password") required String confirmPassword,
+    @CancelRequest() CancelToken? cancelToken,
+  });
+  @POST("/user/change-password")
+  Future<BaseResponse<LoginResponse>> changePassword({
+    @Field("old_password") required String oldPassword,
+    @Field("new_password") required String newPassword,
+    @Field("confirm_password") required String confirmPassword,
     @CancelRequest() CancelToken? cancelToken,
   });
 
@@ -35,6 +70,13 @@ abstract class UserRestClient {
     @CancelRequest() CancelToken? cancelToken,
   });
 
+  @DELETE("/user/{id}")
+  Future<BaseResponse<dynamic>> deleteUser({
+    @Path("id") required int id,
+    @CancelRequest() CancelToken? cancelToken,
+  });
+
+
   @POST("/user")
   @MultiPart()
   Future<BaseResponse<User>> register({
@@ -43,6 +85,7 @@ abstract class UserRestClient {
     @Part(name: "bank_id") required String bankId,
     @Part(name: "bank_account_number") required String accountNumber,
     @Part(name: "city_id") required String cityId,
+    @Part(name: "password") required String password,
     @CancelRequest() CancelToken? cancelToken,
   });
 

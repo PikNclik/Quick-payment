@@ -36,9 +36,12 @@ class _ProfileScreenState extends State<ProfileScreen> with InstanceState<Profil
           appBar: (context, theme) => baseAppBar(
             title: 'profile'.tr(),
             actions: [
-              ClickableSvg(
-                svg: 'edit',
-                callback: () => appRouter.push(const UpdateProfile()),
+              Transform.scale(
+                scale :1.3,
+                child: ClickableSvg(
+                  svg: 'edit',
+                  callback: () => appRouter.push(const UpdateProfile()),
+                ),
               ),
             ],
           ),

@@ -74,10 +74,10 @@ class PaymentRepository extends BaseRepository {
     yield* _controller.stream;
   }
 
-  Future<BaseResponse<TotalPaid>> getTotal({int? month, int? year}) {
+  Future<BaseResponse<TotalPaid>> getTotal({int? month, int? year,required String type}) {
     final cancelToken = CancelToken();
     return getResponse(
-      () => paymentRestClient.getTotal(month: month.toString().addZero(), year: year.toString(), cancelToken: cancelToken).onError((error, _) => catchError<TotalPaid>(error)),
+      () => paymentRestClient.getTotal(month: month.toString().addZero(),type: type, year: year.toString(), cancelToken: cancelToken).onError((error, _) => catchError<TotalPaid>(error)),
       cancelToken: cancelToken,
     );
   }
@@ -87,6 +87,7 @@ class PaymentRepository extends BaseRepository {
     String? userId,
     String? status,
     String? query,
+  required  String type,
   }) async {
     /// emit loading
     _controller.add(const PaginationLoading());
@@ -94,6 +95,7 @@ class PaymentRepository extends BaseRepository {
     /// fetch data from server
     try {
       final response = await paymentRestClient.getTransactions(
+        type: type,
         page: page,
         userId: userId,
         status: status,

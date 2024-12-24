@@ -32,7 +32,7 @@ class _CompleteInfoScreenState extends State<CompleteInfoScreen> with InstanceSt
         BaseScaffold(
           appBar: (context, theme) => baseAppBar(),
           builder: (context, theme) {
-            return const ScreenTypeLayout(mobile: CompleteInfoMobileScreen());
+            return  ScreenTypeLayout(mobile: CompleteInfoMobileScreen());
           },
         ),
         LoadingListenerWidget(loading: viewModel.baseParams.loading),

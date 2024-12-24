@@ -18,6 +18,7 @@ class ProfileParams {
   /// Default filter for total amount
   final month = DateTime.now().month.mmm.liveData;
   final year = DateTime.now().year.toString().liveData;
+  final version =  "".liveData;
 
   final totalPaid = const TotalPaid().liveData;
 

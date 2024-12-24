@@ -67,6 +67,7 @@ extension DateExtension on String {
   DateTime dateTimeConverter({String? lang}) {
     DateTime date;
     try {
+      //return Intl.withLocale("en", () => DateFormat("yyyy-MM-dd hh:mm","en").parse(this));
       /// convert from(yyyy-MM-dd hh:mm a) String  to DateTime
       var inputFormat = DateFormat('yyyy-MM-dd hh:mm a', lang);
       date = inputFormat.parse(this);

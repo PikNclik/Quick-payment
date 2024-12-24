@@ -28,7 +28,7 @@ export enum CellType {
   default,
 }
 
-export enum BaseCmsAction { view, edit, delete, block, unBlock, cancel }
+export enum BaseCmsAction { view, edit, delete, block, unBlock, cancel, permissions,details,internal_commission,external_commission }
 
 /**
  * cms event model
@@ -188,6 +188,8 @@ export interface BaseCmsConfig<T> {
   formConfig?: (item?: T) => FormConfig<T>;
 
   exportable?: boolean;
+
+  exportName?: string;
 }
 
 /**

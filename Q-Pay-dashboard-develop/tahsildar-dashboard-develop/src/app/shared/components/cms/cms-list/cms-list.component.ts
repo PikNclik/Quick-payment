@@ -148,7 +148,7 @@ export class CmsListComponent<T> {
   }
 
   export() {
-    const filename = `Transaction ${new Date().toDateString()} ${Date.now()}`;
+    const filename = `${this.cmsConfig.exportName} ${new Date().toDateString()} ${Date.now()}`;
     this.cmsService.loading.next(true);
     this.cmsService.httpService.download(
       `${this.cmsConfig.endPoint}/excel`,

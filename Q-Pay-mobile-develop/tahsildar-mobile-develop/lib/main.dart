@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:tahsaldar/controllers/auth_controller.dart';
 import 'package:tahsaldar/notifications/notification_handler.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'config/http_overrides.dart';
 import 'config/instance_config.dart';
@@ -60,6 +61,41 @@ class _MyAppState extends State<MyApp> {
 
     // logOut
     eventBus.on<UnauthorizedEvent>().listen((_) => _handleUnauthorizedEvent());
+
+    eventBus.on<OutdatedVersionEvent>().listen((data) => _handleOutDatedVersionEvent(data.message));
+
+  }
+  bool _isOutDatedShowing = false;
+  _handleOutDatedVersionEvent (String message) {
+    if (_isOutDatedShowing) return;
+    _isOutDatedShowing = true;
+    showDialog(
+        barrierDismissible :false,
+        context: appRouter.navigatorKey.currentContext ?? context, builder:
+      (context){
+        return WillPopScope(
+          onWillPop: ()async{
+            return false;
+          },
+          child: AlertDialog(
+            title: const Text("نسخة قديمة!"),
+            content: Column (
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(message)
+              ],
+            ),
+            actions: [
+              TextButton(onPressed: (){
+                if (Platform.isAndroid){
+                  launchUrlString("https://play.google.com/store/apps/details?id=com.piknclk.qpay");
+                }
+
+              }, child: const Text("تحديث التطبيق"))
+            ],
+          ),
+        );
+      }).then((value) => _isOutDatedShowing = false);
   }
 
   /// logOut
@@ -80,7 +116,7 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         routerDelegate: appRouter.delegate(),
         routeInformationParser: appRouter.defaultRouteParser(),
-        title: 'Tahsaldar',
+        title: 'Q-Pay',
         themeMode: findInstance<ThemeController>().themeMode.value,
         theme: lightTheme,
         darkTheme: darkTheme,

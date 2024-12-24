@@ -27,7 +27,8 @@ class StatisticsRrequest extends MainRequest
         switch ($this->method()) {
             case 'GET':
                 return [
-                'date' => ['date','date_format:Y-m-d'],
+                'from_date' => ['required','date','date_format:Y-m-d'],
+                'to_date' => ['required','date','date_format:Y-m-d'],
                 'start' => ['date','date_format:Y-m-d'],
                 'end' => ['date','date_format:Y-m-d'],
                 'user_id' => ['nullable',Rule::exists('users','id')],

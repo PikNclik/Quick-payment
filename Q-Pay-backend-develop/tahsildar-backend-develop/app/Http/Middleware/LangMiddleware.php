@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\RedirectResponse;
@@ -20,7 +21,14 @@ class LangMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $lang = $request->header('lang');
+        $lang = $request->header('lang') ?? "ar";
+        $user = \Auth::user();
+        if (\Auth::user() instanceof User &&  $user->language != $lang)
+        {
+            $user->update(["language" => $lang]);
+        }
+
+
         if ($lang == 'ar') {
             App::setLocale('ar');
             // set carbon locale en for get all date and time in english.

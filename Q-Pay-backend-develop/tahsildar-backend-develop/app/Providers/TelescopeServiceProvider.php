@@ -62,4 +62,13 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
             ]);
         });
     }
+
+    protected function authorization()
+    {
+       
+        Telescope::auth(function ($request) {
+            
+            return request()->header('admin') == env('TELESCOPE_AUTH_KEY');
+        });
+    }
 }

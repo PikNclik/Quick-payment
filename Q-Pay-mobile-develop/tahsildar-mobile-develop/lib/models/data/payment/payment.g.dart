@@ -10,7 +10,12 @@ _$_Payment _$$_PaymentFromJson(Map json) => _$_Payment(
       id: json['id'] as int?,
       payerName: json['payer_name'] as String?,
       payerMobileNumber: json['payer_mobile_number'] as String?,
-      amount: json['amount'] as int?,
+      customer: json['customer'] == null
+          ? null
+          : Customer.fromJson(
+              Map<String, dynamic>.from(json['customer'] as Map)),
+      amount: json['amount'] as num?,
+      feesValue: json['fees_value'] as num?,
       details: json['details'] as String?,
       status: json['status'] as int?,
       expiryDate: json['expiry_date'] == null
@@ -37,7 +42,9 @@ Map<String, dynamic> _$$_PaymentToJson(_$_Payment instance) =>
       'id': instance.id,
       'payer_name': instance.payerName,
       'payer_mobile_number': instance.payerMobileNumber,
+      'customer': instance.customer?.toJson(),
       'amount': instance.amount,
+      'fees_value': instance.feesValue,
       'details': instance.details,
       'status': instance.status,
       'expiry_date': instance.expiryDate?.toIso8601String(),

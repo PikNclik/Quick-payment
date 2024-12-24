@@ -21,4 +21,29 @@ class BankController extends BaseCrudController
     {
         parent::__construct($service);
     }
+
+    public function index()
+    {
+        $request = resolve($this->request);
+        $filters = $request->all();
+        $filters['active'] = true;
+        //$filters['system_bank_data'] = true;
+        $isPaginate = $request->isPaginate ?: "true";
+        return $this->handleSharedMessage(
+            $this->service->index(
+                $this->columns,
+                $this->with,
+                $request->per_page ?? $this->length,
+                $request->sort_keys ?? ['id'],
+                $request->sort_dir ?? ['desc'],
+                $filters,
+                $this->searchableFields,
+                $request->search ?? null,
+                $this->searchInRelation,
+                $request->withTrash ?? 0,
+                $this->joinsArray,
+                $isPaginate === 'true'
+            )
+        );
+    }
 }

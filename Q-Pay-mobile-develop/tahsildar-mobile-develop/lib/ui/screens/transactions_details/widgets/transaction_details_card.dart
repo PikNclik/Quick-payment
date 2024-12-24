@@ -10,6 +10,8 @@ import 'package:tahsaldar/ui/screens/transactions_details/widgets/transaction_st
 import 'package:tahsaldar/ui/screens/transactions_details/widgets/transaction_total_amount.dart';
 import 'package:tahsaldar/ui/widgets/instance/instance_builder.dart';
 
+import '../../../../utils/fake_utils.dart';
+
 class TransactionDetailsCard extends StatelessWidget {
   final Payment transaction;
   const TransactionDetailsCard({required this.transaction, Key? key}) : super(key: key);
@@ -34,7 +36,15 @@ class TransactionDetailsCard extends StatelessWidget {
               _buildCardRow(
                 'payer_name',
                 Text(
-                  transaction.payerName.toString(),
+                  transaction.customer?.name??'',
+                  style: title2,
+                ),
+              ),
+              const SizedBox(height: 13),
+              _buildCardRow(
+                'mobile_number',
+                Text(
+                  transaction.customer?.phone??'',
                   style: title2,
                 ),
               ),
@@ -42,27 +52,39 @@ class TransactionDetailsCard extends StatelessWidget {
               _buildCardRow(
                 'amount',
                 Text(
-                  '${viewModel.amount.toString().formatNumber()} ${'sp'.tr()}',
-                  style: title3,
+                  '${viewModel.amount.toString().formatNumber()} ${FakeUtil.getCurrency()}',
+                  style: title2,
                 ),
               ),
               const SizedBox(height: 13),
               _buildCardRow(
                 'fees',
                 Text(
-                  '${viewModel.fees.toString().formatNumber()}${'sp'.tr()}',
-                  style: title3,
+                  '${viewModel.fees.toString().formatNumber()}${FakeUtil.getCurrency()}',
+                  style: title2,
                 ),
               ),
               const SizedBox(height: 13),
-              _buildCardRow('status', TransactionStatus(status: transactionStatuses[transaction.status] ?? '-')),
+              _buildCardRow('status', TransactionStatus(
+                  style: title2,
+                  status: transactionStatuses[transaction.status] ?? '-')),
+              if (transaction.scheduledDate != null)
+                if (transaction.scheduledDate != null) const SizedBox(height: 13),
+
+              _buildCardRow(
+                  'schedule_date',
+                  Text(
+                    transaction.scheduledDate?.displayedDatetime ?? "-",
+                    style: title2,
+                  ),
+                ),
               if (transaction.expiryDate != null) const SizedBox(height: 13),
               if (transaction.expiryDate != null)
                 _buildCardRow(
                   'expiry_date',
                   Text(
                     transaction.expiryDate?.displayedDatetime ?? "-",
-                    style: title3,
+                    style: title2,
                   ),
                 )
             ],
@@ -76,7 +98,7 @@ class TransactionDetailsCard extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label.tr(), style: body4),
+        Text(label.tr(), style: title2),
         value,
       ],
     );

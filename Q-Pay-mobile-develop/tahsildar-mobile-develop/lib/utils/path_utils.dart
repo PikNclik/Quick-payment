@@ -1,28 +1,41 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Future<String?> getDownloadPath() async {
   Directory? directory;
-  var result = await Permission.storage.request();
-  if (result.isGranted) {
-    try {
-      if (Platform.isIOS) {
-        directory = await getApplicationDocumentsDirectory();
-      } else {
-        directory = Directory('/storage/emulated/0/Download');
-        // Put file in global download folder, if for an unknown reason it didn't exist, we fallback
-        // ignore: avoid_slow_async_io
-        if (!await directory.exists()) directory = await getExternalStorageDirectory() ?? await getTemporaryDirectory();
-        // directory = (await getExternalStorageDirectory() ?? await getDownloadsDirectory() ?? await getTemporaryDirectory());
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  String appName = packageInfo.appName;
+  try {
+    if (Platform.isIOS) {
+      final status = await Permission.storage.status;
+      if (status != PermissionStatus.granted) {
+
+            await Permission.storage.request();
+            //await Permission.manageExternalStorage.request();
+
       }
-    } catch (err, _) {
-      if (kDebugMode) {
-        print("Cannot get download folder path");
+      directory = await getApplicationDocumentsDirectory();
+    } else {
+      await Directory('/storage/emulated/0/Download/$appName').create().then((value) => directory = value);
+      bool? s = await directory?.exists();
+      if (directory == null  ||(s == null  ||s == false)) {
+        final status = await Permission.storage.status;
+        if (status != PermissionStatus.granted) {
+
+              await Permission.storage.request();
+              //await Permission.manageExternalStorage.request();
+
+        }
+        directory = await getExternalStorageDirectory() ?? await getTemporaryDirectory();
       }
     }
+  } catch (err, _) {
+  print("Cannot get download folder path");
   }
+
   return directory?.path;
 }

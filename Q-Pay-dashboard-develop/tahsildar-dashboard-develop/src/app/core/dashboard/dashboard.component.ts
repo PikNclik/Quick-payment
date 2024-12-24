@@ -30,7 +30,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 export class DashboardComponent implements OnInit {
   @ViewChild("drawer", { static: false }) drawer?: MatDrawer;
   public user?: User;
-  public navItems = dashboardNavLinks;
+  public role?: string;
+  public navItems:any;
   public isHandset$!: Observable<boolean>;
 
   constructor(
@@ -41,7 +42,9 @@ export class DashboardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.navItems=dashboardNavLinks.filter(navLink=> !navLink.permissionCategory || this.authService.checkPermission(navLink.permissionCategory,"View"));
     this.user = this.authService.getUser();
+    this.role = this.authService.getUserRoleName();
     this.isHandset$ = this.breakpointObserver
       .observe(Breakpoints.Handset)
       .pipe(

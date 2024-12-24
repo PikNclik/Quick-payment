@@ -3,28 +3,36 @@
 /// more info: https://xflutter-cli.aghiadodeh.com
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutterx_live_data/flutterx_live_data.dart';
 import 'package:tahsaldar/models/data/payment/payment.dart';
+import 'package:tahsaldar/models/ui_models/ui_message.dart';
 import 'package:tahsaldar/ui/core/layouts/base_app_bar.dart';
 import 'package:tahsaldar/ui/core/layouts/base_scaffold.dart';
 import 'package:tahsaldar/ui/core/responsive/screen_type_layout.dart';
-import 'package:tahsaldar/ui/screens/transactions/widgets/top_section/direct_send_icon.dart';
 import 'package:tahsaldar/ui/screens/transactions_details/widgets/share_icon.dart';
 import "package:tahsaldar/ui/widgets/instance/instance_state.dart";
 import 'package:tahsaldar/ui/widgets/loaders/live_data_loader.dart';
 
+import '../../core/layouts/theme_widget.dart';
+import '../../widgets/animations/animated_gesture.dart';
 import "./viewmodels/transactions_details_viewmodel.dart";
 import 'mobile/transactions_details_mobile_screen.dart';
 
 class TransactionsDetailsScreen extends StatefulWidget {
   final Payment transaction;
-  const TransactionsDetailsScreen({required this.transaction, Key? key}) : super(key: key);
+  const TransactionsDetailsScreen({required this.transaction, Key? key})
+      : super(key: key);
 
   @override
-  State<TransactionsDetailsScreen> createState() => _TransactionsDetailsScreenState();
+  State<TransactionsDetailsScreen> createState() =>
+      _TransactionsDetailsScreenState();
 }
 
-class _TransactionsDetailsScreenState extends State<TransactionsDetailsScreen> with InstanceState<TransactionsDetailsScreen, TransactionsDetailsViewModel>, ObserverMixin {
+class _TransactionsDetailsScreenState extends State<TransactionsDetailsScreen>
+    with
+        InstanceState<TransactionsDetailsScreen, TransactionsDetailsViewModel>,
+        ObserverMixin {
   @override
   void onInitState(TransactionsDetailsViewModel instance) {
     super.onInitState(instance);
@@ -36,15 +44,28 @@ class _TransactionsDetailsScreenState extends State<TransactionsDetailsScreen> w
     return LiveDataBuilder<bool>(
       data: viewModel.baseParams.loading,
       builder: (context, loading) {
-        if (loading) return LoadingListenerWidget(loading: viewModel.baseParams.loading);
+        if (loading)
+          return LoadingListenerWidget(loading: viewModel.baseParams.loading);
         return BaseScaffold(
-          appBar: (context, theme) => baseAppBar(title: 'transaction_details'.tr(), actions: [
-            ShareWidget("${"we_are_pleased_share_invoice".tr()}: ${widget.transaction.link}"),
-            const SizedBox(width: 16),
-            const DirectSend(),
+          appBar: (context, theme) =>
+              baseAppBar(title: 'transaction_details'.tr(), actions: [
+            //  ShareWidget("${"we_are_pleased_share_invoice".tr()}: ${widget.transaction.link}"),
+            AnimatedGesture(
+              callback: ()  {
+               Clipboard.setData(ClipboardData(text: "${"we_are_pleased_share_invoice".tr()}: ${widget.transaction.link}"));
+               viewModel.baseParams.uiMessage.postValue(UiMessage(message: "transaction_copied".tr()));
+              },
+              child: ThemeWidget(
+                builder: (context, theme) => Icon(
+                  Icons.copy,
+                  color: theme.primaryColor,
+                ),
+              ),
+            )
           ]),
           builder: (context, theme) {
-            return const ScreenTypeLayout(mobile: TransactionsDetailsMobileScreen());
+            return const ScreenTypeLayout(
+                mobile: TransactionsDetailsMobileScreen());
           },
         );
       },
@@ -52,5 +73,6 @@ class _TransactionsDetailsScreenState extends State<TransactionsDetailsScreen> w
   }
 
   @override
-  TransactionsDetailsViewModel registerInstance() => TransactionsDetailsViewModel();
+  TransactionsDetailsViewModel registerInstance() =>
+      TransactionsDetailsViewModel();
 }

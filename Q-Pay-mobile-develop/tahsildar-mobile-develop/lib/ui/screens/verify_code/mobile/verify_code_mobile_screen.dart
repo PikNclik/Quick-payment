@@ -23,7 +23,7 @@ class VerifyCodeMobileScreen extends StatelessWidget {
               image: 'verify-code',
               animationType: AnimationType.fadeInRight,
               title: 'enter_your_code'.tr(),
-              body: '${'we_sent_you_the_code'.tr()} ${viewModel.params.mobile}',
+              body: '${'we_sent_you_the_code'.tr()} ${viewModel.params.mobile.replaceFirst("+963", "0")}',
               widget: const VerifyCodeForm(),
               actionText: 'next',
               enabled: viewModel.params.submit,

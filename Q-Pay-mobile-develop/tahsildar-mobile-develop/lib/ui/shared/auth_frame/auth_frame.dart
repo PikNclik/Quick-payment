@@ -81,7 +81,7 @@ class AuthFrame extends StatelessWidget {
                       enabled: enabled,
                       text: actionText,
                       callback: action,
-                      width: 100,
+                      width: 110,
                     ),
                     const SizedBox(height: 42),
                   ],

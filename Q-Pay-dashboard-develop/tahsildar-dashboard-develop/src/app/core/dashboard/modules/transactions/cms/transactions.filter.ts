@@ -1,7 +1,7 @@
 import { ngSelectBankConfig } from "src/app/models/data/bank.model";
 import { ngSelectCityConfig } from "src/app/models/data/city.model";
 import { ngSelectMerchantConfig } from "src/app/models/data/merchant.model";
-import { transactionStatus } from "src/app/models/data/transaction.model";
+import {transactionStatus, transactionType} from "src/app/models/data/transaction.model";
 import { FilterInputType, FilterSchema, FilterSelectOption } from "src/app/shared/components/cms/filters/config/filter.iterface";
 
 export let transactionsFilterSchema: FilterSchema = {
@@ -40,6 +40,12 @@ export let transactionsFilterSchema: FilterSchema = {
       label: 'city',
       inputType: FilterInputType.ng_select,
       ngSelectConfig: ngSelectCityConfig,
+    },
+    {
+      key: 'type',
+      label: 'type',
+      inputType: FilterInputType.multi_select,
+      options: [...transactionType.entries()].map(e => new FilterSelectOption({ value: e[0], label: e[1] })),
     },
   ],
 }

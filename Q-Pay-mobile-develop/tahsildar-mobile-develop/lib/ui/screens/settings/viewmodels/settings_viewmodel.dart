@@ -8,11 +8,10 @@
 import 'package:lazy_evaluation/lazy_evaluation.dart';
 import 'package:tahsaldar/repositories/user_repository.dart';
 import 'package:tahsaldar/viewmodels/base_viewmodel.dart';
-
-import '../../../../storage/storage.dart';
+import '../../../../../../storage/storage.dart';
 import '../../main/viewmodels/main_viewmodel.dart';
 import '../widgets/language_setting.dart';
-import "settings_params.dart";
+import 'settings_params.dart';
 
 class SettingsViewModel extends BaseViewModel {
   final _params = Lazy(() => SettingsParams());
@@ -51,7 +50,7 @@ class SettingsViewModel extends BaseViewModel {
     params.preferredLanguage.postValue(fromStringLanguageToEnum(language));
   }
 
-  void changeLanuage(Function() callback) {
+  void changeLanguage(Function() callback) {
     callHttpRequest(
       () => userRepository.updateLanguage(),
       loading: baseParams.loading,

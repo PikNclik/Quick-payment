@@ -23,12 +23,15 @@ import "complete_info_params.dart";
 
 class CompleteInfoViewModel extends BaseViewModel {
   final _params = Lazy(() => CompleteInfoParams());
+
   CompleteInfoParams get params => _params.value;
 
   final _userRepository = Lazy(() => UserRepository());
+
   UserRepository get userRepository => _userRepository.value;
 
   final _bankRepository = Lazy(() => BankRepository());
+
   BankRepository get bankRepository => _bankRepository.value;
 
   @override
@@ -67,10 +70,26 @@ class CompleteInfoViewModel extends BaseViewModel {
   void accountNumberChanged(MutableLiveData<FormzText> attr, String value) {
     final newValue = FormzText.dirty(value);
     attr.postValue(newValue);
-    if (params.bankAccountNumber.inputValue() != params.confirmBankAccountNumber.inputValue()) {
+    if (params.bankAccountNumber.inputValue() !=
+        params.confirmBankAccountNumber.inputValue()) {
+      // this just to do a hard refresh for the livedata
+      params.bankAccountMatch.postValue(true);
       params.bankAccountMatch.postValue(false);
     } else {
       params.bankAccountMatch.postValue(true);
+    }
+    params.submit.postValue(params.isFormFilled());
+  }
+
+  void passwordChanged(MutableLiveData<FormzText> attr, String value) {
+    final newValue = FormzText.dirty(value);
+    attr.postValue(newValue);
+    if (params.password.inputValue() != params.confirmPassword.inputValue()) {
+      // this just to do a hard refresh for the livedata
+      params.passwordMatch.postValue(true);
+      params.passwordMatch.postValue(false);
+    } else {
+      params.passwordMatch.postValue(true);
     }
     params.submit.postValue(params.isFormFilled());
   }
@@ -80,13 +99,10 @@ class CompleteInfoViewModel extends BaseViewModel {
     String bankId = params.bankId.inputValue();
     String accountNumber = params.bankAccountNumber.inputValue();
     String addressId = params.addressId.inputValue();
+    String password = params.password.inputValue();
     callHttpRequest(
       () => userRepository.register(
-        fullName,
-        bankId,
-        accountNumber,
-        addressId,
-      ),
+          fullName, bankId, accountNumber, addressId, password),
       loading: baseParams.loading,
       callback: (response) async {
         if (response != null) {

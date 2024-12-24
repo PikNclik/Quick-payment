@@ -9,6 +9,22 @@ import { ErrorService } from "./http/error.service";
 
 @Injectable({ providedIn: 'root' })
 export class AuthService extends DataService {
+
+  private roles= [
+    {id:1,name:"Admin",priority:2},
+    {id:2,name:"Customer Support",priority:3},
+    {id:3,name: "Super Admin",priority:1}
+  ] ;
+  private permissionCategories= [
+    {id:1,name:"Merchants",text_to_show:"Q-PAY Users"},
+    {id:2,name:"Banks Management",text_to_show:"Banks Management"},
+    {id:3,name: "Reports",text_to_show:"Reports"},
+    {id:4,name: "Terminal accounts",text_to_show:"Terminal accounts"},
+    {id:5,name: "Transaction to do",text_to_show:"Settlement Files"},
+    {id:6,name: "Customers",text_to_show:"Customers"},
+    {id:7,name: "Working days",text_to_show:"Update working days"},
+    {id:8,name: "Settings",text_to_show:"Settings"}
+  ] ;
   constructor(
     httpClient: HttpClient,
   ) {
@@ -50,6 +66,23 @@ export class AuthService extends DataService {
     return undefined;
   }
 
+  public checkRole(role_name: string): boolean{
+   
+    return (this.roles.find(role => role.id === this.getUser()?.role_id)?.priority || 100) <= (this.roles.find(role => role.name === role_name)?.priority || 1);
+  }
+
+  public checkPermission(categoryName: string,permissionName: string): boolean{
+    let categoryId=this.permissionCategories.find(a => a.name.toLowerCase()==categoryName.toLowerCase())?.id;
+    let check=this.getUser()?.permissions?.filter(a=> a.category_id== categoryId && a.name?.toLowerCase()== permissionName.toLowerCase());
+    return (this.getUser()?.role_id == 3)|| (!!check && check.length>0);
+  }
+
+  public getUserRoleName(): string{
+   
+    return  this.roles.find(role => role.id === this.getUser()?.role_id)?.name || "Admin";
+  }
+
+
   /**
    * get jwt from local-storage
    * @returns {string} jwt
@@ -57,7 +90,13 @@ export class AuthService extends DataService {
   public getAuthToken(): string {
     return localStorage.getItem("token") || "";
   }
-
+  /**
+   * get user role
+   * @returns {string | undefined}
+   */
+  public getUserRole(): number | undefined {
+    return this.getUser()?.role_id;
+  }
   /**
    * login by send credentials to server
    * @param credentials email and password
@@ -87,5 +126,9 @@ export class AuthService extends DataService {
     const user = this.getUser();
     if (user) return of(true);
     return of(false);
+  }
+
+  public getPermissionCategories(){
+    return this.permissionCategories;
   }
 }

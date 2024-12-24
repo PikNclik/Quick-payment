@@ -3,6 +3,7 @@
 return [
     'error' => "Failed",
     'wrong_email_or_password' => 'The email or password is incorrect.',
+    'wrong_password' => 'The password is incorrect. please try again later',
     'blocked' => 'Your account is blocked.',
     'wrong_old_password' => 'Wrong password, check your password and try again.',
     'new_password_similar_to_the_current' => 'Please enter a new password.',
@@ -17,7 +18,11 @@ return [
     'not_authorized_update' => "You're not authorized to update :object.",
     'wrong_code' => "The verify code is wrong.",
     'user_not_found' => "User Not Found.",
-    'not_allowed' => "You can't cancel this transaction.",
+    'not_allowed' => "You can't cancel this transaction because its :status.",
     'prevent' => "Your account has been locked, please contact us on 0000",
     'throttle' => 'Too many login attempts. Please try again in :minutes minutes.',
+    'default_transaction_error' => 'You have to ensure that there is at least one default account for each_bank',
+    'new_password_regex' => 'Password must have at least one uppercase letter, one lowercase letter, and one number.',
+    'sessoin_expired' => 'Session expired. Please log in again.',
+    'terminal_account_has_commission' => 'Selected terminal account has a commission scheme.'
 ];

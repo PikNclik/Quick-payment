@@ -21,7 +21,7 @@ class ProfileImage extends StatefulWidget {
 }
 
 class ProfileImageState extends State<ProfileImage> {
-  pickImage() => appRouter.push(ImageCropper());
+  pickImage() => appRouter.push(const ImageCropper());
 
   @override
   Widget build(BuildContext context) {

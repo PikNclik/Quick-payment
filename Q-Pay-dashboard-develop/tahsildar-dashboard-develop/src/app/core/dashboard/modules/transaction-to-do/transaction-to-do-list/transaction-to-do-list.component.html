@@ -1,0 +1,12 @@
+<div fxLayout="column">
+  <app-cms-list>
+    <div topActions>
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <button *ngIf="showBarakaExternal" mat-button (click)="getALBarakaExcelFile()" color="primary">AL Baraka settlement files</button>
+        <input type="file" accept=".xlsx" #file hidden (change)="handleFileInput($event)">
+        <button *ngIf="showImport" mat-button (click)="file.click()" color="primary">Update Status Excel</button>
+      </div>
+
+    </div>
+  </app-cms-list>
+</div>

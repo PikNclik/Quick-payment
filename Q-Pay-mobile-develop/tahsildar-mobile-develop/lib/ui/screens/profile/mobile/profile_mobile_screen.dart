@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterx_live_data/flutterx_live_data.dart';
 import 'package:tahsaldar/models/data_models.dart';
@@ -24,6 +25,7 @@ class ProfileMobileScreen extends StatelessWidget {
               child: AnimatedColumn(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  SizedBox(height: 30,),
                   const ProfileTopSection(),
                   const SizedBox(height: 12),
                   LiveDataBuilder<TotalPaid>(
@@ -37,6 +39,12 @@ class ProfileMobileScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 15),
                   const ProfileMenu(),
+                  LiveDataBuilder(
+                      data: viewModel.params.version,
+                    builder: (context,version) {
+                      return Text("${"version_number".tr()} : $version");
+                    },
+                  ),
                 ],
               ),
             );

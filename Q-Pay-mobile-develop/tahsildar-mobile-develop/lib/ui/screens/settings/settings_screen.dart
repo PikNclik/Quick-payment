@@ -10,7 +10,7 @@ import 'package:tahsaldar/ui/core/responsive/screen_type_layout.dart';
 import "package:tahsaldar/ui/widgets/instance/instance_state.dart";
 import 'package:tahsaldar/ui/widgets/loaders/live_data_loader.dart';
 
-import "./viewmodels/settings_viewmodel.dart";
+import 'viewmodels/settings_viewmodel.dart';
 import 'mobile/settings_mobile_screen.dart';
 
 class SettingsScreen extends StatefulWidget {

@@ -80,11 +80,11 @@ class DateTextFormFieldState extends State<DateTextFormField> {
   void initState() {
     widget.defaultValue?.let((it) => sentTextController.text = it);
     widget.defaultValue?.let((it) {
-      if (it.isNotEmpty) {
+      if (it.isNotEmpty&&it!="null") {
         textController.text = widget.datePickerType == DatePickerType.date ? it.displayedDate() : it.formatStringDateTime();
 
         /// convert it to datetime type
-        currentTime = it.dateTimeConverter();
+      //  currentTime = it.dateTimeConverter();
       }
     });
     focusNode.addListener(() {

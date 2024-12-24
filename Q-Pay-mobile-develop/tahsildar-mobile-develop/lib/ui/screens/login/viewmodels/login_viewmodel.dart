@@ -34,7 +34,7 @@ class LoginViewModel extends BaseViewModel {
       eventBus.fire(const SoftKeyboardEvent());
     }
     params.submit.postValue(attr.value.valid);
-    params.success.postValue(params.submit.value&&params.agreePrivacy.value);
+    params.success.postValue(params.submit.value);
 
   }
 
@@ -44,13 +44,22 @@ class LoginViewModel extends BaseViewModel {
       mobile = mobile.replaceFirst("0", "");
     }
     mobile = "+963$mobile";
-    callHttpRequest(() => userRepository.login(mobile), loading: baseParams.loading, callback: (response) {
-      appRouter.push(VerifyCode(mobile: mobile));
+    callHttpRequest(() => userRepository.login(mobile,false), loading: baseParams.loading, callback: (response) {
+      if(response!=null){
+        if(response){
+          appRouter.push(LoginPassword(mobile: mobile));
+
+        }else{
+
+              appRouter.push(VerifyCode(mobile: mobile));
+
+
+        }
+      }
+
     });
   }
 
-  changeAgree(){
-    params.agreePrivacy.value=! params.agreePrivacy.value;
-    params.success.postValue(params.submit.value&&params.agreePrivacy.value);
-  }
+
+
 }

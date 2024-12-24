@@ -10,7 +10,7 @@ PreferredSize baseAppBar({bool isBack = true, List<Widget>? actions, String? tit
   return PreferredSize(
     preferredSize: const Size(
       double.infinity,
-      60.0,
+      70.0,
     ),
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
@@ -23,7 +23,7 @@ PreferredSize baseAppBar({bool isBack = true, List<Widget>? actions, String? tit
                 BaseBackButton(
                   backHandler: backHandler,
                 ),
-              if (title != null) Text(title, style: body2),
+              if (title != null) Text(title, style: body1),
             ],
           ),
           Row(
@@ -44,7 +44,10 @@ class BaseBackButton extends StatelessWidget {
     return AnimatedGesture(
       callback: backHandler ?? () => appRouter.pop(),
       child: Center(
-        child: SvgPicture.asset('arrow-left'.svgAsset, matchTextDirection: true),
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: SvgPicture.asset('arrow-left'.svgAsset, matchTextDirection: true),
+        ),
       ),
     );
   }

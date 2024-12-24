@@ -6,24 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Success</title>
     <style>
-        .success-page{
-  max-width:300px;
-  display:block;
-  margin: 0 auto;
-  text-align: center;
-      position: relative;
-    top: 50%;
-    transform: perspective(1px) translateY(50%)
-}
 .success-page img{
-  max-width:62px;
+  max-width:90px;
   display: block;
   margin: 0 auto;
 }
 h2{
     font-weight: bold;
     color:#47c7c5;
-    margin-top: 125px;
+    /*margin-top: 125px;*/
 
 }
 a{
@@ -31,12 +22,17 @@ a{
 }
     </style>
 </head>
-<body>
+<body style="">
     <div class="success-page">
-        <img  src="{{asset('images/green_checkmark.png')}}" class="center" alt="" />
-       <h2>{{ $message }}</h2>
-       <p>Thanks for using our app</p>
+
+        <div class="inner-div" style="display: flex; justify-content: center; flex-direction: column; align-items: center;min-height: 100vh">
+            <img  src="{{asset('images/green_checkmark.png')}}" class="center" style="margin: 10px" alt="" />
+       <h2>تمت عملية الدفع بنجاح</h2>
+        <a href="{{$link}}" target="_blank">
+            <img src="{{ asset('images/done_payment.jpg') }}" alt="app link" style="margin: 10px;width: 350px!important;max-width: 350px!important; height: 200px;">
+        </a>
      </div>
      </div>
+
 </body>
 </html>

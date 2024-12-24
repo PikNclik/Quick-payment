@@ -11,6 +11,10 @@
     margin-bottom: .5rem;
   }
 
+  mat-card h1{
+    color: var(--primary);
+  }
+
   mat-form-field {
     max-width: 300px;
   }

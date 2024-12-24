@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { finalize } from 'rxjs';
+import { finalize, Subject, takeUntil } from 'rxjs';
 import { SharedModule } from 'src/app/shared/modules/shared.module';
 import { HttpService } from 'src/app/shared/services/http/http.service';
 import { FormNgSelectConfig } from '../config/forms.config';
@@ -30,13 +30,21 @@ export class GenericNgSelectComponent<T> implements OnInit {
   public loading: boolean = false;
   public allItems: any[] = [];
   public items: any[] = [];
+  private destroy$ = new Subject<void>();
   constructor(private httpService: HttpService) { }
 
   ngOnInit(): void {
     this.getData();
-    this.config.refresh?.subscribe(() => this.getData('', true));
+    this.config.refresh?.pipe(takeUntil(this.destroy$)).subscribe((data) => {
+      if (data)
+        this.config.queryParams=data;
+      this.getData('', true);
+    });
   }
-
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
   /**
    * search for data
    *
@@ -98,5 +106,9 @@ export class GenericNgSelectComponent<T> implements OnInit {
       }
     });
     return items;
+  }
+
+  onClear() {
+    this.getData('', true);
   }
 }

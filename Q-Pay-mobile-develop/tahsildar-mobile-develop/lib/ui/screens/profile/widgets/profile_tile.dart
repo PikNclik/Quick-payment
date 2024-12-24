@@ -10,8 +10,9 @@ import '../../../resources/themes/card_style.dart';
 
 class ProfileTile extends StatelessWidget {
   final String tile;
+  final bool isPassword;
   final Function() callback;
-  const ProfileTile({required this.tile, required this.callback, Key? key}) : super(key: key);
+  const ProfileTile({required this.tile, required this.callback, this.isPassword=false,Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class ProfileTile extends StatelessWidget {
         decoration: profileTileStyle,
         child: Row(
           children: [
-            SvgPicture.asset(tile.svgAsset, color: DesignColors.primaryColor),
+            isPassword?const Icon(Icons.lock_outline_rounded,color: DesignColors.primaryColor):SvgPicture.asset(tile.svgAsset, color: DesignColors.primaryColor),
             const SizedBox(width: 12),
             Text(tile.tr(), style: title2),
           ],

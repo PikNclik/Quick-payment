@@ -1,0 +1,69 @@
+<h2 mat-dialog-title>Details</h2>
+<mat-dialog-content class="mat-typography">
+  
+    <div class="details-container">
+        <div class="details-column">
+            {{'id' | translate}}: {{ data.transaction.id }}
+        </div>
+        <div class="details-column">
+            {{'username' | translate}}: {{ data.transaction.user?.full_name }}
+        </div>
+        <div class="details-column">
+            {{'user_number' | translate}}: {{ data.transaction.user?.phone }}
+        </div>
+        <div class="details-column">
+            {{'user_bank_account_number' | translate}}: {{ data.transaction.user?.bank_account_number }}
+        </div>
+        <div class="details-column">
+            {{'customer_number' | translate}}: {{ data.transaction.customer?.phone }}
+        </div>
+        <div class="details-column">
+            {{'requested_payments' | translate}}: {{ data.transaction.amount }}
+        </div>
+        <div class="details-column">
+            {{'payment_details' | translate}}: {{ data.transaction.details }}
+        </div>
+        <div class="details-column">
+            {{'payment_status' | translate}}: {{ data.transaction.status }}
+        </div>
+        <div class="details-column">
+            {{'type' | translate}}: {{ data.transaction.type }}
+        </div>
+        <div class="details-column">
+            {{'merchant_city' | translate}}: {{ data.transaction.user?.city?.name }}
+        </div>
+        <div class="details-column">
+            {{'card_number' | translate}}: {{ data.transaction.hash_card }}
+        </div>
+        <div class="details-column">
+            {{'fees_percentage' | translate}}: {{ data.transaction.fees_percentage }}
+        </div>
+        <div class="details-column">
+            {{'fees_value' | translate}}: {{ data.transaction.fees_value }}
+        </div>
+        <div class="details-column">
+            {{'payment_request_date' | translate}}: {{ data.transaction.created_at }}
+        </div>
+        <div class="details-column">
+            {{'scheduled_date' | translate}}: {{ data.transaction.scheduled_date }}
+        </div>
+        <div class="details-column">
+            {{'expiry_date' | translate}}: {{ data.transaction.expiry_date }}
+        </div>
+        <div class="details-column">
+            {{'paid_date' | translate}}: {{ data.transaction.transaction_to_do?.created_at }}
+        </div>
+        <div class="details-column">
+            {{'settlement_date' | translate}}: {{ data.transaction.settlement_date }}
+        </div>
+        <div class="details-column">
+            {{'merchant_reference' | translate}}: {{ data.transaction.merchant_reference }}
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="btns">
+    <button mat-button mat-dialog-close>
+        Close
+    </button>
+  
+</mat-dialog-actions>

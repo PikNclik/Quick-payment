@@ -140,7 +140,7 @@ class Handler extends ExceptionHandler
         $response['status'] = $statusCode;
 
         return response()->json([
-            'message' => "",
+            'message' => $errors[0],
             'status' => false,
             'data' => null,
             'errors' => $errors,

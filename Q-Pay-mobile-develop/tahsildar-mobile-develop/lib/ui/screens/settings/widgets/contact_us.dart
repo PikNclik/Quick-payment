@@ -18,35 +18,13 @@ class ContactUs extends StatelessWidget {
           style: body3,
         ),
         const SizedBox(height: 10),
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             SocialMediaIcon(
               svg: 'call',
               number: '011-2224101',
             ),
-            SizedBox(width: 20),
-
-            SocialMediaIcon(
-              svg: 'whatsapp',
-              whatsapp: '0943333323',
-            ),
-            SizedBox(width: 20),
-            SocialMediaIcon(
-              svg: 'instagram',
-              instagram: 'https://www.instagram.com',
-            ),
-            SizedBox(width: 20),
-            SocialMediaIcon(
-              svg: 'messenger',
-              messenger: 'ammarshaalan',
-            ),
-            SizedBox(width: 20),
-            SocialMediaIcon(
-              svg: 'facebook',
-              facebook: 'https://www.facebook.com',
-            ),
-
           ],
         ),
         const SizedBox(height: 42)

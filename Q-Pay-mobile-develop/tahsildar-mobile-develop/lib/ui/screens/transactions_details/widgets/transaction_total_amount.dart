@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../utils/fake_utils.dart';
 import '../../../resources/colors/colors.dart';
 import '../../../resources/text_styles/text_styles.dart';
 
@@ -15,7 +16,7 @@ class TransactionTotalAmount extends StatelessWidget {
       children: [
         Text(amount, style: isLarge ? headline2.copyWith(color: DesignColors.secondaryColor) : headline1.copyWith(color: DesignColors.secondaryColor)),
         const SizedBox(width: 4),
-        Text('sp'.tr(), style: isLarge ? headline1.copyWith(color: DesignColors.secondaryColor) : title3.copyWith(color: DesignColors.secondaryColor)),
+        Text(FakeUtil.getCurrency(), style: isLarge ? headline1.copyWith(color: DesignColors.secondaryColor) : title3.copyWith(color: DesignColors.secondaryColor)),
       ],
     );
   }

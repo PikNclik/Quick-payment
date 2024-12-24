@@ -46,6 +46,10 @@ class AuthenticationController {
     final object = await getUser();
     return object.id != null;
   }
+  static Future<bool> completeProfile() async {
+    final object = await getUser();
+    return object.fullName==null?false:true;
+  }
 
   /// Clear localStorage and local-Database
   static logOut() async {

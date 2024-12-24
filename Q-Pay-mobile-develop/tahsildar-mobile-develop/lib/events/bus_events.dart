@@ -16,6 +16,14 @@ class UnauthorizedEvent {
   const UnauthorizedEvent();
 }
 
+
+class OutdatedVersionEvent {
+  final String message;
+   OutdatedVersionEvent(this.message);
+}
+
+
+
 /// Send event from non-context class to main class to change current theme
 class ThemeChangedEvent {
   const ThemeChangedEvent();

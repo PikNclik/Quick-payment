@@ -12,4 +12,5 @@ interface Transactions {
   total_transactions?: number;
   pending_value?: number;
   paid_value?: number;
+  unsuccessful_transactions ?: number;
 }

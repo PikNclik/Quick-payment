@@ -17,6 +17,6 @@ class LoginParams {
 
   /// form enabled for submit
   final submit = false.liveData;
-  final agreePrivacy = false.liveData;
+//  final agreePrivacy = false.liveData;
   final success = false.liveData;
 }

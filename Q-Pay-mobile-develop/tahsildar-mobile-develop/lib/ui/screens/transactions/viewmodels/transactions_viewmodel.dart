@@ -12,12 +12,14 @@ import 'package:animated_infinite_scroll_pagination/animated_infinite_scroll_pag
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:lazy_evaluation/lazy_evaluation.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:tahsaldar/extensions/data_extension.dart';
 import 'package:tahsaldar/models/data/payment/payment.dart';
 import 'package:tahsaldar/models/ui_models/ui_message.dart';
 import 'package:tahsaldar/network/config/env.dart';
 import 'package:tahsaldar/viewmodels/base_viewmodel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../config/instance_config.dart';
 import '../../../../extensions/date_extension.dart';
@@ -48,7 +50,7 @@ class TransactionsViewModel extends BaseViewModel with PaginationViewModel<Payme
 
   getTotalPaid() {
     callHttpRequest(
-      () => paymentRepository.getTotal(month: params.month.value.number, year: params.year.value.toInteger()),
+      () => paymentRepository.getTotal(month: params.month.value.number, year: params.year.value.toInteger(),type: "payment"),
       loading: baseParams.loading,
       callback: (response) {
         if (response != null) {
@@ -63,7 +65,7 @@ class TransactionsViewModel extends BaseViewModel with PaginationViewModel<Payme
 
   @override
   Future<void> fetchData(int page) async {
-    final total = await paymentRepository.getAllTransactions(page);
+    final total = await paymentRepository.getAllTransactions(page, type: 'payment');
     // tell the view-model the total of items.
     // this will stop loading more data when last data-chunk is loaded
     setTotal(total);
@@ -98,11 +100,9 @@ class TransactionsViewModel extends BaseViewModel with PaginationViewModel<Payme
     final dio = findInstance<Dio>();
     String? saveDirectory = await getDownloadPath();
     final filename = 'transactions_${DateTime.now().millisecondsSinceEpoch}';
-
     if (saveDirectory != null) {
       saveDirectory = '$saveDirectory/$filename.xlsx';
     }
-
     File file = File(saveDirectory ?? '');
 
     file.create(recursive: true);
@@ -111,8 +111,14 @@ class TransactionsViewModel extends BaseViewModel with PaginationViewModel<Payme
     if (response.data != null) {
       try {
         await file.writeAsBytes(response.data);
-        baseParams.uiMessage.postValue(UiMessage(message: response.statusCode == 200 ? 'excel_file_downloaded'.tr() : 'issue_occurred_while_downloading'.tr()));
-      } catch (e) {
+        if(response.statusCode == 200){
+          baseParams.uiMessage.postValue(UiMessage(message: "${'excel_file_downloaded'.tr()}\n $saveDirectory",action: "open".tr(),callBack:()=>OpenFilex.open(saveDirectory)
+          ));
+
+        }else{
+          baseParams.uiMessage.postValue(UiMessage(  message: 'issue_occurred_while_downloading'.tr()));
+
+        }      } catch (e) {
         baseParams.uiMessage.postValue(UiMessage(message: e.toString()));
       }
     }
@@ -120,18 +126,5 @@ class TransactionsViewModel extends BaseViewModel with PaginationViewModel<Payme
 
   addItemToList(Payment payment, int index) => insertItem(index, payment, paginationParams.page);
 
-  deleteTransaction(String id) async {
-    callHttpRequest(
-      () => paymentRepository.cancel(id),
-      loading: baseParams.loading,
-      callback: (response) async {
-        if (response != null) {
-          final index = paginationParams.itemsList.value.items.indexWhere((element) => element.item.id.toString() == id);
-          deleteItem(index);
-          addItemToList(response, index);
-          getTotalPaid();
-        }
-      },
-    );
-  }
+
 }

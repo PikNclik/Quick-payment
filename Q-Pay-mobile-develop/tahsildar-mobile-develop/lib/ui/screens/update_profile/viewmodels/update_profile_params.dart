@@ -35,13 +35,13 @@ class UpdateProfileParams {
 
   /// User bank
   final bankId = FormzText.pure(userLiveData.value.bankId.toString()).liveData;
-  final bankName = FormzText.pure(userLiveData.value.bank?.name ?? "").liveData;
+  final bankName = FormzText.pure(userLiveData.value.bankName()).liveData;
 
   final banks = <AutoCompleteItemModel>[].liveData;
 
   /// User address
   final addressId = FormzText.pure(userLiveData.value.cityId.toString()).liveData;
-  final addressName = FormzText.pure(userLiveData.value.city?.name ?? "").liveData;
+  final addressName = FormzText.pure(userLiveData.value.cityName() ?? "").liveData;
 
   final addresses = <AutoCompleteItemModel>[].liveData;
 

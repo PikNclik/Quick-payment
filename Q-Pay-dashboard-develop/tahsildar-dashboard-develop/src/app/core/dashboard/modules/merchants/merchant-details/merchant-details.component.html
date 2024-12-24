@@ -1,0 +1,60 @@
+<h2 mat-dialog-title>Details</h2>
+<mat-dialog-content class="mat-typography">
+  
+    <div class="details-container">
+        <div class="details-column">
+            {{'id' | translate}}: {{ data.merchant.id }}
+        </div>
+        <div class="details-column">
+            {{'full_name' | translate}}: {{ data.merchant.full_name }}
+        </div>
+        <div class="details-column">
+            {{'mobile_number' | translate}}: {{ data.merchant.phone }}
+        </div>
+        <div class="details-column">
+            {{'bank_name' | translate}}: {{ data.merchant.bank?.name }}
+        </div>
+        <div class="details-column">
+            {{'city' | translate}}: {{ data.merchant.city?.name }}
+        </div>
+        <div class="details-column">
+            {{'bank_account_number' | translate}}: {{ data.merchant.bank_account_number }}
+        </div>
+        <div class="details-column">
+            {{'paid_amount' | translate}}: {{ data.merchant.paid_amount }}
+        </div>
+        <div class="details-column">
+            {{'pending_amount' | translate}}: {{ data.merchant.pending_amount }}
+        </div>
+        <div class="details-column">
+            {{'settled_amount' | translate}}: {{ data.merchant.settled_amount }}
+        </div>
+        <div class="details-column">
+            {{'business_name' | translate}}: {{ data.merchant.business_name }}
+        </div>
+        <div class="details-column">
+            {{'business_type' | translate}}: {{ data.merchant.profession?.business_domain?.business_type?.name }}
+        </div>
+        <div class="details-column">
+            {{'business_domain' | translate}}: {{ data.merchant.profession?.business_domain?.name }}
+        </div>
+        <div class="details-column">
+            {{'profession' | translate}}: {{ data.merchant.profession?.name }}
+        </div>
+        <div class="details-column">
+            {{'completed' | translate}}: {{ data.merchant.completed }}
+        </div>
+        <div class="details-column">
+            {{'created_at' | translate}}: {{ data.merchant.created_at }}
+        </div>
+        <div class="details-column">
+            {{'activated_at' | translate}}: {{ data.merchant.activated_at }}
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end" class="btns">
+    <button mat-button mat-dialog-close>
+        Close
+    </button>
+  
+</mat-dialog-actions>

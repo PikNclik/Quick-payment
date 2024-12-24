@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Definitions\PaymentStatus;
 use App\Models\Payment;
 use App\Services\Shared\NotificationService;
+use Illuminate\Support\Facades\Http;
 
 class PaymentObserver
 {
@@ -29,11 +30,19 @@ class PaymentObserver
             $new_status = $payment->status;
             $old_status = $payment->getOriginal('status');
 
-            $title = "Payment With Invoice Num #$payment->id Status has updated";
-            $body = "Payment With Invoice Num #$payment->id Status has updated";
+            $payment->load('user');
+            $user_webhook_url = $payment->user->webhook_url;
+            if ($user_webhook_url && $new_status == PaymentStatus::PAID)
+                Http::post($user_webhook_url, [
+                    'id' => $payment->id,
+                    'amount' => $payment->amount,
+                    'details' => $payment->details,
+                ]);
+            $title = "لديك اشعار جديد!";
+            $body = "تم تحديث حالة الفاتورة #$payment->id";
             $user_id = $payment->user_id;
             $payload = ['payment_id' => $payment->id , 'image' => null];
-            if (in_array($new_status,PaymentStatus::NOTIFICATION_STATUSES))
+            if ($user_id && in_array($new_status,PaymentStatus::NOTIFICATION_STATUSES))
                 $this->notificationService->send($user_id,$title,$body,$payload);
         }
     }

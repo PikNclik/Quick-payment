@@ -1,19 +1,38 @@
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:tahsaldar/extensions/data_extension.dart';
 
 class NeatCostFilterFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
-    final StringBuffer newText = StringBuffer();
-    final neatCost = _neatCost(newValue.text.replaceAll(",", "").replaceAll(".", ""));
-    newText.write(neatCost);
-    // print("neat: ${_neatCost(newValue.text.replaceAll(",", ""))}, value: ${newValue.text}");
-    return TextEditingValue(
-      text: newText.toString(),
-      selection: TextSelection.collapsed(offset: neatCost.length),
-    );
+    String s=newValue.text.replaceArabicNumber();
+    if(newValue.text.length>3){
+       s=s.replaceAll(",", "").replaceAll(".", "");
+      var formatter = NumberFormat('###,000', 'en');
+      print(s);
+       print(double.tryParse(s));
+       // s= formatter.format(double.parse(s));
+       s= formatter.format(double.tryParse(s) ?? 0.0);
+      return TextEditingValue(
+        text: s,
+        selection: TextSelection.collapsed(offset: s.length),
+      );
+    }else{
+      return TextEditingValue(
+        text: s,
+        selection: TextSelection.collapsed(offset: s.length),
+      );
+    }
+
+  }
+  String formatInitialValue(String initialValue) {
+    String s=initialValue.replaceArabicNumber().replaceAll(",", "").replaceAll(".", "");
+    var formatter = NumberFormat('###,000',"en");
+    s= formatter.format(double.parse(s));
+    return s;
   }
 }
+
 
 String formatCurrency(num value, {int fractionDigits = 2}) {
   ArgumentError.checkNotNull(value, 'value');

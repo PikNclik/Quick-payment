@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Bank;
+use Illuminate\Support\Facades\Auth;
 
 class BankRequest extends MainRequest
 {
@@ -33,6 +34,11 @@ class BankRequest extends MainRequest
      */
     public function rules()
     {
+        $super_admin = Auth::user()->tokenCan('super_admin');
+        $rules = [
+            'name_ar' => ['required', 'string', 'max:255'],
+            'name_en' => ['required', 'string', 'max:255'],
+        ];
         switch ($this->method()) {
             case 'GET':
             case 'PATCH':
@@ -40,10 +46,10 @@ class BankRequest extends MainRequest
                 return [];
             case 'PUT':
             case 'POST':
-            return [
-                'name_ar' => ['required', 'string', 'max:255'],
-                'name_en' => ['required', 'string', 'max:255'],
-            ];
+            return
+                array_merge($rules, [
+                    'active' => ['required', 'boolean'],
+                ]);
             default:
                 break;
         }

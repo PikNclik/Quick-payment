@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('phone');
             $table->string('verification_code')->nullable();
             $table->string('bank_account_number')->nullable();
+            $table->string('password')->nullable();
+            $table->string('webhook_url')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

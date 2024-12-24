@@ -23,11 +23,13 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('payForm/{id}',[PaymentController::class,'formPay'])->name('payForm');
-Route::get('pay/{id}',[PaymentController::class,'pay'])->name('pay');
-Route::get('confirm-payment/{uuid}',[PaymentController::class,'confirmPayment'])->name('confirm');
-Route::get('reverse-payment/{uuid}',[PaymentController::class,'reversePayment'])->name('reverse');
+Route::post('pay/{id}',[PaymentController::class,'pay'])->name('pay');
 
 Route::post('payment-callback',[PaymentController::class,'callBack'])->name('payment.callback');
 Route::get('failed-payment',function (){
     return view('payment.error',['message' => 'Payment is Failed Please try again later']);
 })->name('payment.error');
+
+Route::get('success-payment',function (){
+    return \view('payment.response',  ['message' => 'Payment is done !','link'=>\App\Models\Setting::where("key","direct_app_link")->first()->value]);
+})->name('payment.success');

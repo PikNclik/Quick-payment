@@ -8,7 +8,7 @@ use App\Models\Admin;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Cache;
 
 class AuthService
 {
@@ -28,9 +28,15 @@ class AuthService
             {
                 return new ApiSharedMessage(__('errors.wrong_email_or_password'), [], false, null, 401);
             }
+            $timeout = 15 * 60;
+            Cache::put('user-last-activity-' . $user->id, 1,$timeout);
             $data['user'] = $user ;
 
-            $data['user']->accessToken = $user->createToken('user-auth-token', ['admin'])->plainTextToken;
+            $last_abilities = $user->tokens()->latest()->first() ?->abilities;
+            $user->tokens()->delete();
+            $personal_token = $user->createToken('user-auth-token',$last_abilities ?? ['admin']);
+            $data['user']->accessToken = $personal_token->plainTextToken;
+            $data['user']->permissions =  $user->role != null ?  $user->role->permissions: [];
 
             return new ApiSharedMessage(
                 __('success.login', ['user' => $user->username]),

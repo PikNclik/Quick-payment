@@ -4,8 +4,6 @@ import 'package:tahsaldar/models/data/payment/payment.dart';
 import 'package:tahsaldar/router/app_router.dart';
 import 'package:tahsaldar/ui/resources/colors/colors.dart';
 import 'package:tahsaldar/ui/resources/text_styles/text_styles.dart';
-import 'package:tahsaldar/ui/widgets/animations/animated_gesture.dart';
-import 'package:tahsaldar/ui/widgets/clickable_svg/clickable_svg.dart';
 
 import '../../../resources/themes/card_style.dart';
 import '../../transactions_details/widgets/transaction_date.dart';
@@ -22,62 +20,58 @@ class TransactionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedGesture(
-      callback: () =>
-          appRouter.push(TransactionsDetails(transaction: transaction)),
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8),
-        decoration: transactionCardStyle,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      decoration: transactionCardStyle,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildIdBanner('#${transaction.id}'),
+              Padding(
+                padding: const EdgeInsetsDirectional.only(end: 16),
+                child: TransactionStatus(
+                    status: transactionStatuses[transaction.status] ?? '-'),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: Column(
               children: [
-                _buildIdBanner('#${transaction.id}'),
-                Padding(
-                  padding: const EdgeInsetsDirectional.only(end: 16),
-                  child: TransactionStatus(
-                      status: transactionStatuses[transaction.status] ?? '-'),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildPayeeName(transaction.customer?.name??''),
+                    TransactionTotalAmount(
+                        amount: ((transaction.amount ??0) + ((transaction.feesValue) ??0)).toString().formatNumber())
+                  ],
                 ),
+                const SizedBox(height: 4),
+                _buildTransactionReason((transaction.details??"").toString()),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TransactionDate(
+                      transaction: transaction,
+                      transactionDateType: TransactionDateType.created,
+                    ),
+                    // if (!transaction.isNotDeletable())
+                    //   ClickableSvg(
+                    //       svg: 'trash',
+                    //       callback: () {
+                    //         onDelete.call();
+                    //       })
+                  ],
+                ),
+                const SizedBox(height: 12),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                children: [
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _buildPayeeName(transaction.payerName.toString()),
-                      TransactionTotalAmount(
-                          amount: transaction.amount.toString().formatNumber())
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  _buildTransactionReason(transaction.details.toString()),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      TransactionDate(
-                        transaction: transaction,
-                        transactionDateType: TransactionDateType.created,
-                      ),
-                      if (!transaction.isNotDeletable())
-                        ClickableSvg(
-                            svg: 'trash',
-                            callback: () {
-                              onDelete.call();
-                            })
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

@@ -18,6 +18,6 @@ export class MerchantService extends DataService {
    */
   public blockUser(user: Merchant): Observable<Merchant> {
     user.active = user.active == 0 ? 1 : 0;
-    return this.put<Merchant>(`${user.id}`, user);
+    return this.post<Merchant>(`block/${user.id}`);
   }
 }

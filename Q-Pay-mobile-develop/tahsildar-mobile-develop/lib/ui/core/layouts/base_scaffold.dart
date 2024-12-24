@@ -48,22 +48,20 @@ class BaseScaffoldState extends State<BaseScaffold> {
               statusBarColor: Colors.transparent,
               statusBarIconBrightness:
                   widget.statusBarIconBrightness ?? brightness),
-          child: SafeArea(
-            child: Scaffold(
-              key: scaffoldKey,
-              extendBody: true,
-              extendBodyBehindAppBar: true,
-              backgroundColor:
-                  widget.backgroundColor ?? theme.scaffoldBackgroundColor,
-              drawer: widget.drawer,
-              body: widget.builder(context, theme),
-              appBar: widget.appBar?.let((it) => it(context, theme)),
-              floatingActionButton: widget.floatingActionButton,
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-              bottomNavigationBar: widget.bottomNavigationBar,
-              resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
-            ),
+          child: Scaffold(
+            key: scaffoldKey,
+            extendBody: true,
+            extendBodyBehindAppBar: true,
+            backgroundColor:
+                widget.backgroundColor ?? theme.scaffoldBackgroundColor,
+            drawer: widget.drawer,
+            body: widget.builder(context, theme),
+            appBar: widget.appBar?.let((it) => it(context, theme)),
+            floatingActionButton: widget.floatingActionButton,
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: widget.bottomNavigationBar,
+            resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
           ),
         );
       },

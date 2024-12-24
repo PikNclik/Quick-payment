@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Definitions\PaymentStatus;
+use App\Jobs\SendPaymentNotificationToUser;
 use App\Jobs\SendSmsToPhone;
 use App\Mail\PaymentMail;
 use App\Models\User;
@@ -46,7 +47,8 @@ class ScheduledPayment extends Command
         foreach ($payments as $payment)
         {
             $this->paymentRepository->update($payment->id,['status' => PaymentStatus::PENDING]);
-            SendSmsToPhone::dispatch($payment->payer_mobile_number,__('payment.payment_link',[],$payment->user->language).' '. config('app.url').'/payForm/'.$payment->uuid);
+            SendSmsToPhone::dispatch($payment->customer->phone,__('payment.payment_link',['name'=>$payment->user->full_name],$payment->user->language).' '. config('app.url').'/payForm/'.$payment->uuid);
+            SendPaymentNotificationToUser::dispatch($payment->id);
         }
         return CommandAlias::SUCCESS;
     }

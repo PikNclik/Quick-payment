@@ -7,6 +7,7 @@ import 'package:tahsaldar/models/forms/formz_mobile.dart';
 import 'package:tahsaldar/models/forms/formz_text.dart';
 
 import '../../../extensions/data_extension.dart';
+import '../../../extensions/text_format_extension.dart';
 import 'customized_text_form_field.dart';
 
 class LiveDataTextField<T extends FormzInput> extends StatefulWidget {
@@ -15,6 +16,7 @@ class LiveDataTextField<T extends FormzInput> extends StatefulWidget {
   final MutableLiveData<T> liveData;
   final TextEditingController? controller;
   final Function(MutableLiveData<T>, String) onTextChanged;
+  final Function(String?)? validate;
   final TextInputType? keyboardType;
   final TextInputAction textInputAction;
   final int minLines;
@@ -26,6 +28,8 @@ class LiveDataTextField<T extends FormzInput> extends StatefulWidget {
   final Function? onEditingComplete;
   final FocusNode? focusNode;
   final bool editable;
+  final bool isNumber;
+  final bool secure;
   final TextStyle? textStyle;
   final String? errorText;
   final TextCapitalization? textCapitalization;
@@ -38,6 +42,7 @@ class LiveDataTextField<T extends FormzInput> extends StatefulWidget {
     this.hint,
     this.keyboardType,
     this.textInputAction = TextInputAction.next,
+    this.validate,
     this.minLines = 1,
     this.maxLines = 1,
     this.prefixIcon,
@@ -47,6 +52,8 @@ class LiveDataTextField<T extends FormzInput> extends StatefulWidget {
     this.onEditingComplete,
     this.focusNode,
     this.editable = true,
+    this.secure=false,
+    this.isNumber=false,
     this.textStyle,
     this.errorText,
     this.textCapitalization,
@@ -70,7 +77,13 @@ class LiveDataTextFieldState<T extends FormzInput> extends State<LiveDataTextFie
     // check if liveData has a value, this used when user fill the textField
     // and navigate to other screen and back
     if (widget.liveData.isNotEmpty()) {
-      textController.text = widget.liveData.inputValue();
+      if(widget.isNumber){
+        textController.text =NeatCostFilterFormatter().formatInitialValue( widget.liveData.inputValue());
+
+      }else{
+        textController.text = widget.liveData.inputValue();
+
+      }
     }
     super.initState();
   }
@@ -107,6 +120,7 @@ class LiveDataTextFieldState<T extends FormzInput> extends State<LiveDataTextFie
           hintText: widget.hint,
           controller: textController,
           keyboardType: widget.keyboardType,
+          secure: widget.secure,
           textInputAction: widget.textInputAction,
           minLines: widget.minLines,
           maxLines: widget.maxLines,
@@ -122,6 +136,7 @@ class LiveDataTextFieldState<T extends FormzInput> extends State<LiveDataTextFie
           errorText: widget.errorText ?? error(),
           textCapitalization: widget.textCapitalization,
           inputFormatters: widget.inputFormatters,
+          validator:(p0) => widget.validate?.call(p0),
         );
       },
     );

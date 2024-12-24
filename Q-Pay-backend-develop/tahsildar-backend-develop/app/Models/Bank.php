@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Filters\Bank\ActiveFilter;
+use App\Filters\Bank\SystemBankDataFilter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Carbon\Carbon;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use OwenIt\Auditing\Contracts\Auditable;
 
 /**
  * App\Models\Bank
@@ -21,10 +25,12 @@ use Astrotomic\Translatable\Translatable;
  * @method static Builder|Bank whereCreatedAt($value)
  * @method static Builder|Bank whereUpdatedAt($value)
  */
-class Bank extends BaseModel implements TranslatableContract
+class Bank extends BaseModel implements TranslatableContract, Auditable
 {
-    use HasFactory, Translatable;
-
+    use HasFactory, Translatable, \OwenIt\Auditing\Auditable;
+    protected $auditInclude = [
+        'active'
+    ];
     protected $guarded = [];
 
     protected $hidden = ['translations'];
@@ -35,4 +41,10 @@ class Bank extends BaseModel implements TranslatableContract
 
     public $translationForeignKey = 'bank_id';
 
+    protected array $filters = [ActiveFilter::class,SystemBankDataFilter::class];
+
+    public function system_bank_data(): HasMany
+    {
+        return $this->hasMany(SystemBankData::class);
+    }
 }

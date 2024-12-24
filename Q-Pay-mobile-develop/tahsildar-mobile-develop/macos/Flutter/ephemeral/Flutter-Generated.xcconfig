@@ -1,10 +1,10 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=D:\tools\flutter version\p
-FLUTTER_APPLICATION_PATH=D:\Project\Tradinos\mobile\tahsildar-mobile
+FLUTTER_ROOT=/Users/wasilni/tools/flutter
+FLUTTER_APPLICATION_PATH=/Users/wasilni/Documents/TradinosProjects/tahsildar-mobile
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_BUILD_DIR=build
 FLUTTER_BUILD_NAME=1.0.0
-FLUTTER_BUILD_NUMBER=1
+FLUTTER_BUILD_NUMBER=9
 DART_OBFUSCATION=false
 TRACK_WIDGET_CREATION=true
 TREE_SHAKE_ICONS=false

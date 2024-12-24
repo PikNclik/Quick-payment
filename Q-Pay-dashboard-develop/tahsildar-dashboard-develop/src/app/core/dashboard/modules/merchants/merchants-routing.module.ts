@@ -8,7 +8,7 @@ const routes: Routes = [
       {
         path: '',
         loadComponent: () => import('./merchants-list/merchants-list.component').then(e => e.MerchantsListComponent),
-        data: { title: 'merchant' }
+        data: { title: 'merchants' }
       },
     ]
   }

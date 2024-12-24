@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Add Event</h2>
+<mat-dialog-content>
+  <div style="height: 5rem; padding: 0.2rem">
+    <mat-form-field style="width:100%">
+      <mat-label>{{ "event name" }}</mat-label>
+      <input matInput [formControl]="form">
+      <mat-error>{{ "event name" }} {{ "is_required" }}</mat-error>
+    </mat-form-field>
+  </div>
+
+  </mat-dialog-content>
+<mat-dialog-actions [align]="'end'" style="padding-bottom: 1.5rem;">
+    <button mat-button mat-dialog-close color="black">{{ "cancel" }}</button>
+    <button mat-button color="primary" (click)="submit()">{{ "yes" }}</button>
+</mat-dialog-actions>

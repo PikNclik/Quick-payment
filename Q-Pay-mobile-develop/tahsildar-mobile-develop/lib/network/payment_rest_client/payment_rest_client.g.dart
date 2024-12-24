@@ -22,12 +22,14 @@ class _PaymentRestClient implements PaymentRestClient {
   Future<BaseResponse<TotalPaid>> getTotal({
     month,
     year,
+    type,
     cancelToken,
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
       r'month': month,
       r'year': year,
+      r'type': type,
     };
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
@@ -55,6 +57,7 @@ class _PaymentRestClient implements PaymentRestClient {
 
   @override
   Future<BaseResponse<ListResponse<Payment>>> getTransactions({
+    required type,
     userId,
     required page,
     perPage = Env.perPage,
@@ -63,6 +66,7 @@ class _PaymentRestClient implements PaymentRestClient {
   }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{
+      r'type': type,
       r'user_id': userId,
       r'page': page,
       r'per_page': perPage,

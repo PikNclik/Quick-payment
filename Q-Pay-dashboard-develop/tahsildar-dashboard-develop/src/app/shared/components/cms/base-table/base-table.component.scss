@@ -1,52 +1,130 @@
 .base-table-container {
-    width: 100%;
-    position: relative;
+  width: 100%;
+  position: relative;
 
-    mat-progress-bar {
-        position: absolute;
-        z-index: 1000;
-    }
+  mat-progress-bar {
+    position: absolute;
+    z-index: 1000;
+  }
 
-    mat-paginator,
-    table th {
-        background-color: var(--light-background);
-    }
+  mat-paginator,
+  table th {
+    background-color: var(--light-background);
+  }
+}
+
+.element-row {
+  cursor: pointer;
+  pointer-events: all;
+
+  * div {
+    pointer-events: none;
+  }
+  * button {
+    pointer-events: all;
+  }
 }
 
 .base-table-wrapper {
-    flex: auto;
-    overflow: auto;
+  flex: auto;
+  overflow: auto;
 }
 
 .base-table-wrapper table {
-    table-layout: fixed;
-    width: 100%;
-    align-self: flex-start;
-    overflow-x: auto;
+  table-layout: fixed;
+  width: 100%;
+  align-self: flex-start;
+  overflow-x: auto;
 }
 
 td,
 th {
-    white-space: normal;
-    word-wrap: break-word;
-    width: 200px;
-    text-align: start;
-    justify-content: flex-start;
+  white-space: normal;
+  word-wrap: break-word;
+  width: 200px;
+  text-align: start;
+  justify-content: flex-start;
 }
 
 td div {
-    margin-inline-end: .5rem;
+  margin-inline-end: 0.5rem;
 }
 
 ::ng-deep .mat-sort-header-container {
-    display: flex;
-    justify-content: flex-start;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .green {
-    color: green;
+  color: green;
 }
 
 .red {
-    color: red;
+  color: red;
+}
+
+table {
+  width: 100%;
+}
+
+tr.detail-row {
+  height: 0;
+  & > td {
+    padding: 0;
+  }
+}
+
+tr.element-row:not(.expanded-row):hover {
+  background: whitesmoke;
+}
+
+tr.element-row:not(.expanded-row):active {
+  background: #efefef;
+}
+
+.element-row td {
+  border-bottom-width: 0;
+}
+
+.element-detail {
+  overflow: hidden;
+  display: flex;
+}
+
+.element-diagram {
+  min-width: 80px;
+  border: 2px solid black;
+  padding: 8px;
+  font-weight: lighter;
+  margin: 8px 0;
+  height: 104px;
+}
+
+.element-symbol {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: normal;
+}
+
+.element-description {
+  padding: 16px;
+}
+
+.element-description-attribution {
+  opacity: 0.5;
+}
+.mat-column-expandIcon {
+  .mat-icon {
+    position: relative;
+
+    left: -10px;
+    top: 2px;
+  }
+}
+.expand-column {
+  width: 2rem;
+  // & .mat-icon {
+  //   left: -20px;
+  //   position: relative;
+  // }
 }

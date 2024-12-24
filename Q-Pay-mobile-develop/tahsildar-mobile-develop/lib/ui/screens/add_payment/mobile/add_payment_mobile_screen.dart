@@ -18,8 +18,8 @@ class AddPaymentMobileScreen extends StatelessWidget {
       builder: (viewModel) {
         return ThemeWidget(
           builder: (context, theme) {
-            return const Padding(
-              padding: EdgeInsets.only(top: spaceBelowAppBar),
+            return  Padding(
+              padding: const EdgeInsets.only(top: spaceBelowAppBar),
               child: AddPaymentForm(),
             );
           },

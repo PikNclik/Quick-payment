@@ -10,7 +10,7 @@ class DirectSend extends StatelessWidget {
   Widget build(BuildContext context) {
     return InstanceBuilder<TransactionsViewModel>(
       builder: (viewModel) => ClickableSvg(
-          svg: 'direct-send', callback: viewModel.downloadExcelFile),
+          icon: Icons.download_for_offline_outlined,svg: 'direct-send', callback: viewModel.downloadExcelFile),
     );
   }
 }

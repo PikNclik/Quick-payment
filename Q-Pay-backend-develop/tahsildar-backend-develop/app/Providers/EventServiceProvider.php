@@ -3,7 +3,11 @@
 namespace App\Providers;
 
 use App\Models\Payment;
+use App\Models\SystemBankData;
+use App\Models\TransactionToDo;
 use App\Observers\PaymentObserver;
+use App\Observers\SystemBankDataObserver;
+use App\Observers\TransactionToDoObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -30,6 +34,8 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         Payment::observe(PaymentObserver::class);
+        SystemBankData::observe(SystemBankDataObserver::class);
+        TransactionToDo::observe(TransactionToDoObserver::class);
     }
 
     /**

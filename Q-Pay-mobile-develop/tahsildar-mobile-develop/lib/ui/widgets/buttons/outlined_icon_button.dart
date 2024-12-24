@@ -51,7 +51,9 @@ class _OutlinedIconButtonState extends State<OutlinedIconButton> {
               Future.delayed(const Duration(milliseconds: 300), widget.callback);
             },
             child: Container(
-              height: 40,
+              constraints: BoxConstraints(
+                  minHeight: 40
+              ),
               padding: const EdgeInsets.symmetric(vertical: 8),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),

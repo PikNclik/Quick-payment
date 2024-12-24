@@ -36,22 +36,33 @@ class UserRequest extends MainRequest
      */
     public function rules(): array
     {
+        $user = \auth()->user();
+        $rules =  [
+            'full_name' => ['required', 'string', 'min:5', 'max:255'],
+            'bank_id' => ['nullable', Rule::exists('banks', 'id')->where('active',true)],
+            'city_id' => ['required', Rule::exists('cities', 'id')],
+            'bank_account_number' => ['required', 'string', 'max:255'],
+            'email' => ['nullable', 'email', 'max:255',
+                Rule::unique('users', 'email')->ignore(Auth::id())],
+            'files' => ['nullable', 'array','min:0','max:1'],
+        ];
         switch ($this->method()) {
             case 'GET':
             case 'DELETE':
                 return [];
             case 'POST':
             case 'PUT':
-                return [
-                    'full_name' => ['required', 'string', 'min:5', 'max:255'],
-                    'bank_id' => ['nullable', Rule::exists('banks', 'id')],
-                    'city_id' => ['required', Rule::exists('cities', 'id')],
-                    'bank_account_number' => ['required', 'string', 'max:255'],
-                    'email' => ['nullable', 'email', 'max:255',
-                        Rule::unique('users', 'email')->ignore(Auth::id())],
-                    'files' => ['nullable', 'array','min:0','max:1'],
-              ];
+            return $user->full_name == null ?
+                array_merge($rules, ['password' => ['required', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/']])
+                : $rules;
         }
         return [];
+    }
+
+    public function messages()
+    {
+        return [
+            'password.regex' => __('errors.new_password_regex')
+        ];
     }
 }

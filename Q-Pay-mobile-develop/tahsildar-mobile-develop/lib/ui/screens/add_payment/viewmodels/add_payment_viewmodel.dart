@@ -42,6 +42,7 @@ class AddPaymentViewModel extends BaseViewModel {
     params.submit.postValue(params.isFormFilled());
   }
 
+
   void paymentAmountAttrChanged(MutableLiveData<FormzText> attr, String value) {
     final newValue = FormzText.dirty(value);
     attr.postValue(newValue);
@@ -70,37 +71,70 @@ class AddPaymentViewModel extends BaseViewModel {
 
   scheduleAndSend(dynamic dateTime) {
     params.scheduledDate.postValue(dateTime);
-
-    ///
-    addPaymentRequest();
   }
 
   pickExpiryDate(DateTime dateTime) {
     params.expiryDate.postValue(dateTime);
   }
+  removeZeroFromPhone(){
+   return  params.payerMobile.inputValue().startsWith("0")?params.payerMobile.inputValue().replaceFirst("0", ""): params.payerMobile.inputValue();
+  }
+
 
   createPaymentModel() {
-    AddPaymentParams.payment = Payment(
+    params.payment =Payment(
         payerName: params.payerName.inputValue(),
-        payerMobileNumber: params.payerMobile.inputValue(),
+        payerMobileNumber:removeZeroFromPhone(),
         amount: params.paymentAmount.inputValue().replaceAll(",", "").toInteger(),
         details: params.note.inputValue(),
         expiryDate: params.expiryDate.value,
         scheduledDate: params.scheduledDate.value);
+  }
+  updatePaymentModel() {
+    params.payment =params.payment.copyWith(
+        id: params.payment.id,
+        payerName: params.payerName.inputValue(),
+        payerMobileNumber:removeZeroFromPhone(),
+        amount: params.paymentAmount.inputValue().replaceAll(",", "").toInteger(),
+        details: params.note.inputValue(),
+        expiryDate: params.expiryDate.value,
+        scheduledDate: params.scheduledDate.value);
+  }
+  convertModelToField(Payment payment) {
+    params.payment=payment;
+    params.payerName.value=FormzText.pure(payment.customer?.name??'');
+    params.payerMobile.value=FormzMobile.pure(payment.customer?.phone??'');
+    params.paymentAmount.value=FormzText.pure(payment.amount.toString());
+    params.note.value=FormzText.pure(payment.details??'');
+    params.expiryDate.value=payment.expiryDate;
+    params.scheduledDate.value=payment.scheduledDate;
+    paymentAmountAttrChanged(params.paymentAmount,params.paymentAmount.inputValue());
   }
 
   addPaymentRequest() {
     createPaymentModel();
     eventBus.fire(const SoftKeyboardEvent());
     callHttpRequest(
-      () => paymentRepository.create(AddPaymentParams.payment),
+      () => paymentRepository.create(params.payment),
       loading: baseParams.loading,
       callback: (response) async {
         if (response != null) {
-          AddPaymentParams.payment = response;
+          params.payment = response;
           appRouter.pop(true);
-          //appRouter.replace(const Main());
         }
+      },
+    );
+  }
+  updatePaymentRequest() async {
+    updatePaymentModel();
+   await callHttpRequest(
+          () => paymentRepository.update(params.payment.id.toString()??'',params.payment),
+      loading: baseParams.loading,
+      callback: (response) async {
+            if(response!=null){
+              appRouter.pop(true);
+
+            }
       },
     );
   }
@@ -112,7 +146,13 @@ class AddPaymentViewModel extends BaseViewModel {
       callback: (response) {
         if (response != null) {
           final value = num.tryParse(response.value.toString());
-          if (value != null) params.feesPercentage = (value / 100).toDouble();
+          if (value != null){
+            params.feesPercentage = (value / 100).toDouble();
+            params.amount.postValue(params.calculateAmount);
+            params.fees.postValue(params.calculateFees);
+            params.totalAmount.postValue(params.calculateTotalAmount);
+
+          }
         }
       },
     );

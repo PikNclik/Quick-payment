@@ -28,10 +28,10 @@ class PickRequest extends FormRequest
         return [
             'RefNum' => ['required', 'string'],
             'RRN' => ['required', 'string'],
+            'IIN' => ['required', 'string'],
             'HashCard' => ['required', 'string'],
-            'TerminalNumber' => ['required', 'string', Rule::in([env('PICKTERMINAL')])],
+            'TerminalNumber' => ['required', 'string', Rule::in([env('PICKTERMINAL')])], // todo review.
             'Result' => ['required', 'string'],
-            'Token' => ['required', Rule::exists('payments', 'token')->where('status', PaymentStatus::PENDING)],
             'TraceNo' => ['required', Rule::exists('payments', 'id')->where('status', PaymentStatus::PENDING)],
         ];
     }

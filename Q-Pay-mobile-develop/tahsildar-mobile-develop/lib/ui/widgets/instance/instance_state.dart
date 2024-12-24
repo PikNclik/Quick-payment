@@ -83,6 +83,8 @@ mixin InstanceState<T extends StatefulWidget, VM extends BaseViewModel> on State
       showSnackBar(
         context: context,
         message: uiMessage.message!,
+        callback: uiMessage.callBack,
+        action: uiMessage.action,
         backgroundColor: backgroundColor,
       );
       uiMessage.message = null;

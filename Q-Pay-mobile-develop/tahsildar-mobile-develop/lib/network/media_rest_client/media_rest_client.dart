@@ -7,7 +7,7 @@ import '../config/env.dart';
 
 part 'media_rest_client.g.dart';
 
-@RestApi(baseUrl: Env.apiUrl)
+@RestApi()
 abstract class MediaRestClient {
   factory MediaRestClient(Dio dio) = _MediaRestClient;
 

@@ -32,6 +32,28 @@ class CompleteInfoForm extends StatelessWidget {
                 onTextChanged: viewModel.attrChanged,
                 hint: 'type_your_name'.tr(),
                 textInputAction: TextInputAction.next,
+                validate: (p0) {
+                  RegExp pattern = RegExp(r'^[\u0621-\u064A\s]+$');
+                  if (p0 != null) {
+                    if (p0.isEmpty) {
+                      return 'name_empty'.tr();
+                    } else if (p0.length <5) {
+                      return 'name_length'.tr();
+                    } else if (!pattern.hasMatch(p0)) {
+                      return 'name_invalid'.tr();
+                    }
+                    else if (p0
+                        .split(" ")
+                        .length < 3 ||
+                        p0.split(" ")[0].length < 2 ||
+                        p0.split(" ")[1].length < 2 ||
+                        p0.split(" ")[2].length < 2
+                    ){
+                      return 'name_not_triple'.tr();
+                    }
+                    return null;
+                  }
+                },
               ),
             ),
             const SizedBox(height: 16),
@@ -45,10 +67,12 @@ class CompleteInfoForm extends StatelessWidget {
                 dropdownArrow: true,
                 openOnFocus: true,
                 items: list.reversed.toList(),
-                direction: AxisDirection.up,
+                direction: AxisDirection.down,
                 onItemSelected: (type) {
-                  type?.let((it) => viewModel.attrChanged(viewModel.params.bankId, it.id.toString()));
+                  type?.let((it) => viewModel.attrChanged(
+                      viewModel.params.bankId, it.id.toString()));
                 },
+
               ),
             ),
 
@@ -56,18 +80,32 @@ class CompleteInfoForm extends StatelessWidget {
 
             LiveDataBuilder<bool>(
               data: viewModel.params.bankAccountMatch,
-              builder: (context, match) => Column(
+              builder: (context, match) {
+              return  Column(
                 children: [
                   /// User bank account number
                   LabeledTextField(
                     label: 'account_number'.tr(),
                     liveDataTextField: LiveDataTextField(
                       liveData: viewModel.params.bankAccountNumber,
-                      errorText: match ? null : "back_account_number_does_not_match".tr(),
+                      // errorText: match
+                      //     ? null
+                      //     : "back_account_number_does_not_match".tr(),
                       onTextChanged: viewModel.accountNumberChanged,
                       keyboardType: TextInputType.number,
                       hint: '000000',
                       textInputAction: TextInputAction.done,
+                      validate: (p0) {
+                        if(p0!=null){
+                          RegExp regex = RegExp(r'^[0-9]+$');
+                          if(!regex.hasMatch(p0)){
+                            return "number_invalid".tr();
+                          }else if(p0.length < 5 || p0.length > 30){
+                            return "account_number_length".tr();
+
+                          }
+                        }
+                      },
                     ),
                   ),
 
@@ -78,12 +116,26 @@ class CompleteInfoForm extends StatelessWidget {
                     label: 'confirm_account_number'.tr(),
                     liveDataTextField: LiveDataTextField(
                       liveData: viewModel.params.confirmBankAccountNumber,
-                      errorText: match ? null : "back_account_number_does_not_match".tr(),
+                      errorText: match || viewModel.params.confirmBankAccountNumber.inputValue().isEmpty
+                          ? null
+                          : "back_account_number_does_not_match".tr(),
                       onTextChanged: viewModel.accountNumberChanged,
                       keyboardType: TextInputType.number,
                       hint: '000000',
                       textInputAction: TextInputAction.done,
+                      validate:  (p0) {
+                        if(p0!=null){
+                          RegExp regex = RegExp(r'^[0-9]+$');
+                          if(!regex.hasMatch(p0)){
+                            return "number_invalid".tr();
+                          }else if(p0.length < 5 || p0.length > 30){
+                            return "account_number_length".tr();
+
+                          }
+                        }
+                      },
                     ),
+
                   ),
                   const SizedBox(height: 16),
 
@@ -92,19 +144,84 @@ class CompleteInfoForm extends StatelessWidget {
                     data: viewModel.params.addresses,
                     builder: (context, list) => AutoCompleteTextField(
                       labelText: "address",
-                      defaultValue: viewModel.params.addressName.inputValue().tr(),
+                      defaultValue:
+                          viewModel.params.addressName.inputValue().tr(),
                       dropdownArrow: true,
                       openOnFocus: true,
                       items: list.reversed.toList(),
                       direction: AxisDirection.up,
                       onItemSelected: (type) {
-                        type?.let((it) => viewModel.attrChanged(viewModel.params.addressId, it.id.toString()));
+                        type?.let((it) => viewModel.attrChanged(
+                            viewModel.params.addressId, it.id.toString()));
                       },
                     ),
                   ),
                 ],
+              );}
+            ),
+            const SizedBox(height: 16),
+            LiveDataBuilder<bool>(
+              data: viewModel.params.passwordMatch,
+              builder: (context, match) => Column(
+                children: [
+                  LabeledTextField(
+                    tooltipMessage:"password_hint".tr(),
+                    label: 'password'.tr(),
+                    liveDataTextField: LiveDataTextField(
+                      liveData: viewModel.params.password,
+                      // errorText: match
+                      //     ? null
+                      //     : "password_does_not_match".tr(),
+                      onTextChanged: viewModel.passwordChanged,
+                      keyboardType: TextInputType.text,
+                      secure: true,
+                      hint: '******',
+                      textInputAction: TextInputAction.done,
+                      validate: (p0) {
+                        if(p0!=null){
+                          String pattern = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$';
+                          RegExp regExp = RegExp(pattern);
+                          if (!regExp.hasMatch(p0)) {
+                            return "password_hint".tr();
+                          }
+                        }
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  /// Confirm account number
+                  LabeledTextField(
+                    label: 'confirm_password'.tr(),
+                    liveDataTextField: LiveDataTextField(
+                      liveData: viewModel.params.confirmPassword,
+                      errorText: match || viewModel.params.confirmPassword.inputValue().isEmpty
+                          ? null
+                          : "password_does_not_match".tr(),
+                      onTextChanged: viewModel.passwordChanged,
+                      keyboardType: TextInputType.text,
+                      hint: '******',
+                      secure: true,
+                      textInputAction: TextInputAction.done,
+                      validate: (p0) {
+                        if(p0!=null){
+                          if(p0.length<8){
+                            return "password_short".tr();
+                          }
+                        }
+                      },
+                    ),
+
+                  ),
+                  const SizedBox(height: 16),
+
+                  /// User address
+                ],
               ),
             ),
+
+
           ],
         );
       },

@@ -4,6 +4,8 @@ import 'package:tahsaldar/extensions/data_extension.dart';
 import 'package:tahsaldar/ui/resources/text_styles/text_styles.dart';
 import 'package:tahsaldar/ui/resources/themes/card_style.dart';
 
+import '../../../../utils/fake_utils.dart';
+
 class SummaryCard extends StatelessWidget {
   final String amount;
   final String fees;
@@ -41,7 +43,7 @@ class SummaryCard extends StatelessWidget {
             style: body4,
           ),
           Text(
-            '$value${'sp'.tr()}',
+            '$value${FakeUtil.getCurrency()}',
             style: isBold ? headline1 : body2,
           ),
         ],

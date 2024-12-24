@@ -10,11 +10,14 @@ import 'package:tahsaldar/ui/core/responsive/screen_type_layout.dart';
 import "package:tahsaldar/ui/widgets/instance/instance_state.dart";
 import 'package:tahsaldar/ui/widgets/loaders/live_data_loader.dart';
 
+import '../../../models/data/payment/payment.dart';
 import "./viewmodels/add_payment_viewmodel.dart";
 import 'mobile/add_payment_mobile_screen.dart';
 
 class AddPaymentScreen extends StatefulWidget {
-  const AddPaymentScreen({Key? key}) : super(key: key);
+  bool isUpdate;
+  Payment? payment;
+   AddPaymentScreen({Key? key,this.isUpdate=false,this.payment}) : super(key: key);
 
   @override
   State<AddPaymentScreen> createState() => _AddPaymentScreenState();
@@ -23,15 +26,24 @@ class AddPaymentScreen extends StatefulWidget {
 class _AddPaymentScreenState extends State<AddPaymentScreen> with InstanceState<AddPaymentScreen, AddPaymentViewModel>, ObserverMixin {
   @override
   void observeLiveData(observer, viewModel) {
+    viewModel.params.isUpdate=widget.isUpdate;
+    if(widget.isUpdate&&widget.payment!=null){
+      viewModel.convertModelToField(widget.payment!);
+    }
+
     // register observers...
   }
-
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget screen(BuildContext context, viewModel) {
     return Stack(
       children: [
         BaseScaffold(
-          appBar: (context, theme) => baseAppBar(title: 'add_payment_request'.tr()),
+          appBar: (context, theme) => baseAppBar(title:widget.isUpdate?"update_payment_request".tr(): 'add_payment_request'.tr()),
           builder: (context, theme) {
             return const ScreenTypeLayout(mobile: AddPaymentMobileScreen());
           },

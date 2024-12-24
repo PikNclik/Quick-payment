@@ -75,7 +75,7 @@
             <mat-label>{{ item.label | translate }}</mat-label>
             <input matInput [matDatepicker]="picker" [min]="item.datePickerConfig?.minDate"
               [max]="item.datePickerConfig?.maxDate" [formControlName]="item.formControlName"
-              (input)="onChange(item, formGroup.controls[item.formControlName].value)">
+              (dateChange)="onDateChange(item,$event)" >
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>

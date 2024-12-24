@@ -10,6 +10,7 @@ import { finalize } from 'rxjs';
 import { SharedModule } from 'src/app/shared/modules/shared.module';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { ErrorService } from 'src/app/shared/services/http/error.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
@@ -23,11 +24,13 @@ import { ErrorService } from 'src/app/shared/services/http/error.service';
     MatInputModule,
     MatCardModule,
     SharedModule,
+    MatIconModule
   ],
 })
 export class LoginComponent implements OnInit {
   public formGroup!: FormGroup;
   public loading: boolean = false;
+  hide = true;
 
   constructor(
     private errorService: ErrorService,
@@ -77,5 +80,9 @@ export class LoginComponent implements OnInit {
    */
   private navigate(): void {
     this.router.navigate(['dashboard'], { replaceUrl: true });
+  }
+
+  togglePasswordVisibility(): void {
+    this.hide = !this.hide;
   }
 }

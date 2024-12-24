@@ -52,7 +52,7 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinutes(2, 3)->by(request('phone'));
         });
         RateLimiter::for('api/login', function (Request $request) {
-            return Limit::perMinutes(2, 1)->by(request('phone'));
+            return Limit::perMinutes(2, 3)->by(request('phone'));
         });
     }
 }

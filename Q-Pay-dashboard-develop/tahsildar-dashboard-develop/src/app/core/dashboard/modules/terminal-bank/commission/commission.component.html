@@ -1,0 +1,88 @@
+<h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="commission-container">
+        <div *ngIf="loading" class="spinner-container">
+            <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner>
+        </div>
+        <div *ngIf="!loading" class="commission-div">
+            <form fxLayout="column" fxLayoutGap="2rem" fxLayoutAlign="center center" [formGroup]="formGroup">
+
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ "commission_percentage" | translate }}</mat-label>
+                    <input type="number" autocomplete="off" formControlName="commission_percentage" matInput
+                        tabindex="1" />
+                    <mat-error *ngIf="formGroup.get('commission_percentage')?.hasError('required')">
+                        {{ "commission_percentage" | translate }} {{ "is_required" | translate }}
+                    </mat-error>
+                    <mat-error
+                        *ngIf="!formGroup.get('commission_percentage')?.hasError('required') && (formGroup.get('commission_percentage')?.hasError('min') || formGroup.get('commission_percentage')?.hasError('max'))">
+                        {{ "commission_percentage" | translate }} {{ "out_of_range" | translate }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ "commission_fixed" | translate }}</mat-label>
+                    <input type="number" autocomplete="off" formControlName="commission_fixed" matInput tabindex="1" />
+                    <mat-error *ngIf="formGroup.get('commission_fixed')?.hasError('required')">
+                        {{ "commission_fixed" | translate }} {{ "is_required" | translate }}
+                    </mat-error>
+                    <mat-error
+                        *ngIf="!formGroup.get('commission_fixed')?.hasError('required') && formGroup.get('commission_fixed')?.hasError('min')">
+                        {{ "commission_fixed" | translate }} {{ "out_of_range" | translate }}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ "commission_min" | translate }}</mat-label>
+                    <input type="number" autocomplete="off" formControlName="min" matInput tabindex="1" />
+                    <mat-error *ngIf="formGroup.get('min')?.hasError('required')">
+                        {{ "commission_min" | translate }} {{ "is_required" | translate }}
+                    </mat-error>
+                    <mat-error
+                        *ngIf="!formGroup.get('min')?.hasError('required') && formGroup.get('min')?.hasError('min')">
+                        {{ "commission_min" | translate }} {{ "out_of_range" | translate }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ "commission_max" | translate }}</mat-label>
+                    <input type="number" autocomplete="off" formControlName="max" matInput tabindex="1" />
+                    <mat-error *ngIf="formGroup.get('max')?.hasError('required')">
+                        {{ "commission_max" | translate }} {{ "is_required" | translate }}
+                    </mat-error>
+                    <mat-error
+                        *ngIf="!formGroup.get('max')?.hasError('required') && formGroup.get('max')?.hasError('min')">
+                        {{ "commission_max" | translate }} {{ "out_of_range" | translate }}
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ "bank_account_number" | translate }}</mat-label>
+                    <input type="text" autocomplete="off" formControlName="bank_account_number" matInput tabindex="1" />
+                    <mat-error *ngIf="formGroup.get('bank_account_number')?.hasError('required')">
+                        {{ "bank_account_number" | translate }} {{ "is_required" | translate }}
+                    </mat-error>
+
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>{{ "type" | translate }}</mat-label>
+                    <mat-select formControlName="type">
+                        <mat-option value="ignore"> Ignore </mat-option>
+                        <mat-option value="direct"> Direct </mat-option>
+                        <mat-option value="indirect"> Indirect </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- Submit Button -->
+                <button class="btn-height" mat-stroked-button color="primary" [disabled]="formGroup.invalid || loading"
+                    (click)="submit()">
+                    {{ "submit" | translate }}
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+
+</mat-dialog-actions>
